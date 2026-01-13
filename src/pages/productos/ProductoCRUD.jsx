@@ -34,8 +34,14 @@ const ProductosCRUD = () => {
   useEffect(() => {
     const fetchProductos = async () => {
       try {
-        const response = await fetch("http://localhost:8080/api/productos");
-        if (!response.ok) throw new Error("Error al cargar productos");
+        const response = await fetch("http://localhost:8080/api/productos", {
+          headers: {
+            'Authorization': localStorage.getItem('token')
+          }
+        });
+        if (!response.ok) {
+          throw new Error(`Error al cargar productos: ${response.status}`);
+        }
         const data = await response.json();
         setProductos(data);
         setFilteredProductos(data);
@@ -73,7 +79,7 @@ const ProductosCRUD = () => {
     }
 
     try {
-      const response = await fetch(`http://localhost:8080/api/productos/codigo/${tempBarcode}`);
+      const response = await fetch(`http://localhost:8082/api/productos/codigo/${tempBarcode}`);
 
       if (response.ok) {
         const productoExistente = await response.json();
@@ -127,61 +133,61 @@ const ProductosCRUD = () => {
   };
 
   const handleSubmit = async (e) => {
-  e.preventDefault();
-  
-  // Solo para debugging - verifica qué estás enviando
-  console.log("Enviando datos:", formData);
-  console.log("Current producto:", currentProducto);
+    e.preventDefault();
 
-  try {
-    // Determina si es creación o actualización
-    const isUpdating = currentProducto && currentProducto.id;
-    
-    const url = isUpdating 
-      ? `http://localhost:8080/api/productos/${currentProducto.id}`
-      : "http://localhost:8080/api/productos";
+    // Solo para debugging - verifica qué estás enviando
+    console.log("Enviando datos:", formData);
+    console.log("Current producto:", currentProducto);
 
-    const method = isUpdating ? "PUT" : "POST";
+    try {
+      // Determina si es creación o actualización
+      const isUpdating = currentProducto && currentProducto.id;
 
-    const response = await fetch(url, {
-      method,
-      headers: {
-        "Content-Type": "application/json",
-        "Authorization": `Bearer ${localStorage.getItem('token')}`
-      },
-      body: JSON.stringify(formData)
-    });
+      const url = isUpdating
+        ? `http://localhost:8082/api/productos/${currentProducto.id}`
+        : "http://localhost:8082/api/productos";
 
-    if (!response.ok) {
-      const errorText = await response.text();
-      throw new Error(errorText || "Error en la operación");
+      const method = isUpdating ? "PUT" : "POST";
+
+      const response = await fetch(url, {
+        method,
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": localStorage.getItem('token')
+        },
+        body: JSON.stringify(formData)
+      });
+
+      if (!response.ok) {
+        const errorText = await response.text();
+        throw new Error(errorText || "Error en la operación");
+      }
+
+      const result = await response.json();
+      console.log("Respuesta del servidor:", result);
+
+      // Actualiza el estado según corresponda
+      if (isUpdating) {
+        setProductos(productos.map(p =>
+          p.id === currentProducto.id ? result : p
+        ));
+      } else {
+        setProductos([...productos, result]);
+      }
+
+      closeModal();
+      toast.success(`Producto ${isUpdating ? "actualizado" : "creado"} correctamente`);
+    } catch (err) {
+      console.error("Error completo:", err);
+      toast.error(`Error: ${err.message}`);
     }
-
-    const result = await response.json();
-    console.log("Respuesta del servidor:", result);
-
-    // Actualiza el estado según corresponda
-    if (isUpdating) {
-      setProductos(productos.map(p => 
-        p.id === currentProducto.id ? result : p
-      ));
-    } else {
-      setProductos([...productos, result]);
-    }
-
-    closeModal();
-    toast.success(`Producto ${isUpdating ? "actualizado" : "creado"} correctamente`);
-  } catch (err) {
-    console.error("Error completo:", err);
-    toast.error(`Error: ${err.message}`);
-  }
   };
 
   const handleDelete = async (id) => {
     if (!window.confirm("¿Estás seguro de eliminar este producto?")) return;
 
     try {
-      const response = await fetch(`http://localhost:8080/api/productos/${id}`, {
+      const response = await fetch(`http://localhost:8082/api/productos/${id}`, {
         method: "DELETE",
       });
 
@@ -198,9 +204,9 @@ const ProductosCRUD = () => {
     setTempBarcode(codigoBarras);
 
     try {
-      const response = await fetch(`http://localhost:8080/api/productos/codigo/${codigoBarras}`, {
+      const response = await fetch(`http://localhost:8082/api/productos/codigo/${codigoBarras}`, {
         headers: {
-          'Authorization': `Bearer ${localStorage.getItem('token')}`
+          'Authorization': localStorage.getItem('token')
         }
       });
 

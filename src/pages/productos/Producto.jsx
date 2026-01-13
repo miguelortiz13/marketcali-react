@@ -12,12 +12,7 @@ function Producto() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch("http://localhost:8080/api/productos", {
-      mode: "cors",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    })
+    fetch("http://localhost:8082/api/productos")
       .then((res) => {
         if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
         return res.json();
@@ -39,22 +34,22 @@ function Producto() {
 
   useEffect(() => {
     let result = productos;
-    
+
     if (searchTerm) {
-      result = result.filter(p => 
+      result = result.filter(p =>
         p.nombre.toLowerCase().includes(searchTerm.toLowerCase()) ||
         (p.descripcion && p.descripcion.toLowerCase().includes(searchTerm.toLowerCase()))
       );
     }
-    
+
     if (selectedCategory) {
       result = result.filter(p => p.categoria === selectedCategory);
     }
-    
+
     if (selectedBrand) {
       result = result.filter(p => p.marca === selectedBrand);
     }
-    
+
     setFilteredProducts(result);
   }, [searchTerm, selectedCategory, selectedBrand, productos]);
 
@@ -126,8 +121,8 @@ function Producto() {
             </select>
           </div>
 
-          <button 
-            className="reset-filters" 
+          <button
+            className="reset-filters"
             onClick={handleResetFilters}
           >
             Limpiar filtros
@@ -142,11 +137,11 @@ function Producto() {
               <div className="product-id">
                 <FaBarcode /> ID: {product.id}
               </div>
-              
+
               {product.imagen ? (
-                <img 
-                  src={product.imagen} 
-                  alt={product.nombre} 
+                <img
+                  src={product.imagen}
+                  alt={product.nombre}
                   className="product-image"
                   onError={(e) => {
                     e.target.src = 'https://via.placeholder.com/150?text=Imagen+no+disponible';
@@ -157,10 +152,10 @@ function Producto() {
                   <span>Imagen no disponible</span>
                 </div>
               )}
-              
+
               <div className="product-info">
                 <h3 className="product-name">{product.nombre}</h3>
-                
+
                 <div className="product-meta">
                   <span className="product-brand">
                     <FaTags /> {product.marca || "Sin marca"}
@@ -169,15 +164,15 @@ function Producto() {
                     {product.categoria || "Sin categoría"}
                   </span>
                 </div>
-                
+
                 <div className="product-price">
                   ${product.precio.toFixed(2)}
                 </div>
-                
+
                 <div className="product-stock">
                   Stock: {product.cantidad} unidades
                 </div>
-                
+
                 {product.descripcion && (
                   <div className="product-description">
                     <FaInfoCircle /> {product.descripcion}

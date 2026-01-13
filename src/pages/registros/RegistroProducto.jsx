@@ -18,7 +18,7 @@ const RegistroProductos = () => {
   const buscarProducto = async (codigo) => {
     try {
       // Reemplaza con tu endpoint real
-      const response = await fetch(`http://localhost:8080/api/productos/codigo/${codigo}`);
+      const response = await fetch(`http://localhost:8082/api/productos/codigo/${codigo}`);
       if (response.ok) {
         const producto = await response.json();
         return producto;
@@ -33,12 +33,12 @@ const RegistroProductos = () => {
   // Manejar código escaneado
   const handleScan = async (codigo) => {
     setShowScanner(false);
-    
+
     const productoExistente = productos.find(p => p.codigo === codigo);
     if (productoExistente) {
       // Si ya existe, aumentar cantidad
-      setProductos(productos.map(p => 
-        p.codigo === codigo ? {...p, cantidad: p.cantidad + 1} : p
+      setProductos(productos.map(p =>
+        p.codigo === codigo ? { ...p, cantidad: p.cantidad + 1 } : p
       ));
       return;
     }
@@ -75,7 +75,7 @@ const RegistroProductos = () => {
   // Agregar producto manual
   const agregarProducto = () => {
     if (!productoActual.codigo || !productoActual.nombre) return;
-    
+
     setProductos([...productos, productoActual]);
     setProductoActual({
       codigo: '',
@@ -99,7 +99,7 @@ const RegistroProductos = () => {
   // Guardar registro
   const guardarRegistro = async () => {
     try {
-      const response = await fetch('http://localhost:8080/api/registros', {
+      const response = await fetch('http://localhost:8082/api/registros', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -123,19 +123,19 @@ const RegistroProductos = () => {
   return (
     <div className="registro-container">
       <h1><FaBarcode /> Registro de Productos</h1>
-      
+
       <div className="scanner-section">
-        <button 
+        <button
           onClick={() => setShowScanner(true)}
           className="btn-scan"
         >
           <FaBarcode /> Escanear Producto
         </button>
-        
+
         {showScanner && (
           <div className="scanner-modal" ref={scannerRef}>
-            <BarcodeScanner 
-              onScan={handleScan} 
+            <BarcodeScanner
+              onScan={handleScan}
               onClose={() => setShowScanner(false)}
             />
           </div>
@@ -211,7 +211,7 @@ const RegistroProductos = () => {
                   <td>{producto.cantidad}</td>
                   <td>${(producto.precio * producto.cantidad).toFixed(2)}</td>
                   <td>
-                    <button 
+                    <button
                       onClick={() => eliminarProducto(index)}
                       className="btn-delete"
                     >

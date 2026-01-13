@@ -59,9 +59,8 @@ function Navbar() {
               <div key={link.path} className="nav-item">
                 <Link
                   to={link.path}
-                  className={`nav-link ${
-                    location.pathname === link.path ? "active" : ""
-                  }`}
+                  className={`nav-link ${location.pathname === link.path ? "active" : ""
+                    }`}
                 >
                   {link.text}
                   {link.submenu && <FaChevronDown className="dropdown-icon" />}
@@ -120,9 +119,8 @@ function Navbar() {
               <div key={link.path} className="mobile-nav-item">
                 <Link
                   to={link.path}
-                  className={`mobile-nav-link ${
-                    location.pathname === link.path ? "active" : ""
-                  }`}
+                  className={`mobile-nav-link ${location.pathname === link.path ? "active" : ""
+                    }`}
                   onClick={() => setMobileMenuOpen(false)}
                 >
                   {link.text}

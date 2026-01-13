@@ -7,6 +7,7 @@ import Producto from "./pages/productos/Producto";
 import ProductoVisualizador from "./pages/productos/ProductoVisualizador";
 import ProductoCRUD from "./pages/productos/ProductoCRUD"
 import RegistroProducto from "./pages/registros/RegistroProducto";
+import Login from "./pages/auth/Login";
 
 function App() {
   return (
@@ -22,6 +23,7 @@ function App() {
           <Route path="/producto/:id" element={<ProductoVisualizador />} />
           <Route path="/admin/productos" element={<ProductoCRUD />} />
           <Route path="/registro/productos" element={<RegistroProducto />} />
+          <Route path="/login" element={<Login />} />
         </Routes>
       </main>
 
