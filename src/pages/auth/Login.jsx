@@ -21,7 +21,7 @@ const Login = () => {
             const token = 'Basic ' + btoa(username + ':' + password);
             localStorage.setItem('token', token);
             localStorage.setItem('user', JSON.stringify({ username, role: 'USER' }));
-            navigate('/');
+            navigate('/sales');
         } else {
             setError('Credenciales inválidas');
         }

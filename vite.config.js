@@ -7,7 +7,7 @@ export default defineConfig({
   server: {
     proxy: {
       "/api/productos": {
-        target: "http://localhost:8080",
+        target: "http://localhost:8088",
       },
     },
   },

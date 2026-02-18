@@ -1,0 +1,126 @@
+.topbar {
+    height: 64px;
+    background-color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 30px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+    position: sticky;
+    top: 0;
+    z-index: 900;
+}
+
+.topbar-left {
+    flex: 1;
+}
+
+.search-bar {
+    display: flex;
+    align-items: center;
+    background-color: #f7fafc;
+    padding: 8px 15px;
+    border-radius: 8px;
+    width: 300px;
+    border: 1px solid #e2e8f0;
+}
+
+.search-icon {
+    color: #a0aec0;
+    margin-right: 10px;
+}
+
+.search-bar input {
+    border: none;
+    background: none;
+    outline: none;
+    width: 100%;
+    color: #4a5568;
+}
+
+.topbar-right {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.status-indicator {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 5px 10px;
+    background-color: #f7fafc;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    color: #4a5568;
+}
+
+.status-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    display: inline-block;
+}
+
+.status-dot.online {
+    background-color: #48bb78;
+    box-shadow: 0 0 5px #48bb78;
+}
+
+.status-dot.offline {
+    background-color: #f56565;
+}
+
+.notifications {
+    position: relative;
+    cursor: pointer;
+    color: #718096;
+    font-size: 1.2rem;
+}
+
+.badge {
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    background-color: #e53e3e;
+    color: #fff;
+    font-size: 0.7rem;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.user-profile {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    padding-left: 20px;
+    border-left: 1px solid #e2e8f0;
+}
+
+.user-info {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+}
+
+.user-name {
+    font-weight: 600;
+    color: #2d3748;
+    font-size: 0.95rem;
+}
+
+.user-role {
+    font-size: 0.75rem;
+    color: #a0aec0;
+    font-weight: 500;
+}
+
+.user-avatar {
+    font-size: 2rem;
+    color: #cbd5e0;
+}

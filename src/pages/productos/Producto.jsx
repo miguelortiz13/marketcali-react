@@ -12,7 +12,7 @@ function Producto() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch("http://localhost:8082/api/productos")
+    fetch("http://localhost:8088/api/productos")
       .then((res) => {
         if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
         return res.json();

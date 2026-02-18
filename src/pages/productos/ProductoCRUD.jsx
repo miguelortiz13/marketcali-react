@@ -34,7 +34,7 @@ const ProductosCRUD = () => {
   useEffect(() => {
     const fetchProductos = async () => {
       try {
-        const response = await fetch("http://localhost:8080/api/productos", {
+        const response = await fetch("http://localhost:8088/api/productos", {
           headers: {
             'Authorization': localStorage.getItem('token')
           }
@@ -79,7 +79,7 @@ const ProductosCRUD = () => {
     }
 
     try {
-      const response = await fetch(`http://localhost:8082/api/productos/codigo/${tempBarcode}`);
+      const response = await fetch(`http://localhost:8088/api/productos/codigo/${tempBarcode}`);
 
       if (response.ok) {
         const productoExistente = await response.json();
@@ -144,8 +144,8 @@ const ProductosCRUD = () => {
       const isUpdating = currentProducto && currentProducto.id;
 
       const url = isUpdating
-        ? `http://localhost:8082/api/productos/${currentProducto.id}`
-        : "http://localhost:8082/api/productos";
+        ? `http://localhost:8088/api/productos/${currentProducto.id}`
+        : "http://localhost:8088/api/productos";
 
       const method = isUpdating ? "PUT" : "POST";
 
@@ -187,7 +187,7 @@ const ProductosCRUD = () => {
     if (!window.confirm("¿Estás seguro de eliminar este producto?")) return;
 
     try {
-      const response = await fetch(`http://localhost:8082/api/productos/${id}`, {
+      const response = await fetch(`http://localhost:8088/api/productos/${id}`, {
         method: "DELETE",
       });
 
@@ -204,7 +204,7 @@ const ProductosCRUD = () => {
     setTempBarcode(codigoBarras);
 
     try {
-      const response = await fetch(`http://localhost:8082/api/productos/codigo/${codigoBarras}`, {
+      const response = await fetch(`http://localhost:8088/api/productos/codigo/${codigoBarras}`, {
         headers: {
           'Authorization': localStorage.getItem('token')
         }
