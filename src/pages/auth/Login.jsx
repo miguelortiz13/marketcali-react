@@ -8,22 +8,31 @@ const Login = () => {
     const [error, setError] = useState('');
     const navigate = useNavigate();
 
-    const handleLogin = (e) => {
+    const handleLogin = async (e) => {
         e.preventDefault();
 
-        // Basic validation (In a real app, you'd hit an endpoint to verify credentials)
-        if (username === 'admin' && password === 'admin') {
-            const token = 'Basic ' + btoa(username + ':' + password);
-            localStorage.setItem('token', token);
-            localStorage.setItem('user', JSON.stringify({ username, role: 'ADMIN' }));
-            navigate('/admin/productos');
-        } else if (username === 'user' && password === 'user') {
-            const token = 'Basic ' + btoa(username + ':' + password);
-            localStorage.setItem('token', token);
-            localStorage.setItem('user', JSON.stringify({ username, role: 'USER' }));
-            navigate('/sales');
-        } else {
-            setError('Credenciales inválidas');
+        try {
+            const res = await fetch('/auth/login', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ username, password })
+            });
+
+            if (res.ok) {
+                const data = await res.json();
+                localStorage.setItem('token', 'Bearer ' + data.token);
+                
+                // Determinamos el rol (por defecto isAdmin si es admin)
+                const role = username === 'admin' ? 'ADMIN' : 'USER';
+                localStorage.setItem('user', JSON.stringify({ username, role }));
+                
+                navigate(role === 'ADMIN' ? '/admin/productos' : '/sales');
+            } else {
+                const errorMsg = await res.text();
+                setError(errorMsg || 'Credenciales inválidas');
+            }
+        } catch (error) {
+            setError('Error de conexión con el servidor');
         }
     };
 

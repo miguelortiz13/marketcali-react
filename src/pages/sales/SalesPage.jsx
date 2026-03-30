@@ -44,19 +44,6 @@ const SalesPage = () => {
 
     // ... imports and previous code ...
 
-    // Update product click to open modal too
-    // ... inside return ...
-    <div className="products-grid">
-        {filteredProducts.map(product => (
-            <div key={product.id} className="product-card" onClick={() => setSelectedProduct(product)}>
-                <div className="product-info">
-                    <h4>{product.nombre}</h4>
-                    <p className="price">${product.precio.toFixed(2)}</p>
-                    <span className="stock">Stock: {product.cantidad}</span>
-                </div>
-            </div>
-        ))}
-    </div>
 
     useEffect(() => {
         fetchProducts();
@@ -167,7 +154,7 @@ const SalesPage = () => {
 
                 <div className="products-grid">
                     {filteredProducts.map(product => (
-                        <div key={product.id} className="product-card" onClick={() => addToCart(product)}>
+                        <div key={product.id} className="product-card" onClick={() => setSelectedProduct(product)}>
                             <div className="product-info">
                                 <h4>{product.nombre}</h4>
                                 <p className="price">${product.precio.toFixed(2)}</p>

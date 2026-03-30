@@ -7,7 +7,7 @@ const UsersPage = () => {
     const [users, setUsers] = useState([]);
     const [loading, setLoading] = useState(false);
     const [showModal, setShowModal] = useState(false);
-    const [newUser, setNewUser] = useState({ username: '', password: '', role: 'USER' });
+    const [newUser, setNewUser] = useState({ username: '', email: '', password: '', role: 'USER' });
 
     useEffect(() => {
         fetchUsers();
@@ -62,7 +62,7 @@ const UsersPage = () => {
             if (res.ok) {
                 toast.success('Usuario creado exitosamente');
                 setShowModal(false);
-                setNewUser({ username: '', password: '', role: 'USER' });
+                setNewUser({ username: '', email: '', password: '', role: 'USER' });
                 fetchUsers();
             } else {
                 const msg = await res.text();
@@ -127,22 +127,31 @@ const UsersPage = () => {
                 <div className="modal-overlay">
                     <div className="modal-content">
                         <h3>Nuevo Usuario</h3>
-                        <form onSubmit={handleCreate}>
-                            <div className="form-group">
-                                <label>Usuario</label>
-                                <input
-                                    type="text"
-                                    required
-                                    value={newUser.username}
-                                    onChange={e => setNewUser({ ...newUser, username: e.target.value })}
-                                />
-                            </div>
-                            <div className="form-group">
-                                <label>Contraseña</label>
-                                <input
-                                    type="password"
-                                    required
-                                    value={newUser.password}
+        <form onSubmit={handleCreate}>
+            <div className="form-group">
+                <label>Usuario</label>
+                <input
+                    type="text"
+                    required
+                    value={newUser.username}
+                    onChange={e => setNewUser({ ...newUser, username: e.target.value })}
+                />
+            </div>
+            <div className="form-group">
+                <label>Correo Electrónico (Email)</label>
+                <input
+                    type="email"
+                    required
+                    value={newUser.email}
+                    onChange={e => setNewUser({ ...newUser, email: e.target.value })}
+                />
+            </div>
+            <div className="form-group">
+                <label>Contraseña</label>
+                <input
+                    type="password"
+                    required
+                    value={newUser.password}
                                     onChange={e => setNewUser({ ...newUser, password: e.target.value })}
                                 />
                             </div>
