@@ -1,174 +1,124 @@
 import { useEffect, useRef } from 'react';
+import { Html5Qrcode } from 'html5-qrcode';
 
 const BarcodeScanner = ({ onScan, onClose }) => {
-  const scannerRef = useRef(null);
-  const videoRef = useRef(null);
-  const QuaggaRef = useRef(null);
-  const animationFrameRef = useRef(null);
+  const html5QrCodeRef = useRef(null);
 
   useEffect(() => {
-    let stream = null;
+    const startScanner = async () => {
+      // Create new instance 
+      const html5QrCode = new Html5Qrcode("reader");
+      html5QrCodeRef.current = html5QrCode;
 
-    const initializeScanner = async () => {
+      const config = {
+        fps: 10,
+        // Optional bounding box to focus scanning
+        qrbox: { width: 250, height: 150 },
+        aspectRatio: 1.0,
+      };
+
       try {
-        // 1. Primero intentamos con la API nativa
-        if ('BarcodeDetector' in window) {
-          const barcodeDetector = new window.BarcodeDetector({
-            formats: ['ean_13', 'ean_8', 'upc_a', 'upc_e', 'code_39', 'code_128']
-          });
-
-          stream = await navigator.mediaDevices.getUserMedia({
-            video: { facingMode: 'environment' }
-          });
-
-          const video = document.createElement('video');
-          videoRef.current = video;
-          video.srcObject = stream;
-          video.autoplay = true;
-          video.playsInline = true;
-          scannerRef.current.appendChild(video);
-
-          const detectBarcode = async () => {
-            if (!videoRef.current) return;
-
-            try {
-              const barcodes = await barcodeDetector.detect(video);
-              if (barcodes.length > 0) {
-                onScan(barcodes[0].rawValue);
-                onClose();
-              }
-            } catch (err) {
-              console.error('Error en detección:', err);
+        await html5QrCode.start(
+          { facingMode: "environment" }, // Prefer back camera
+          config,
+          (decodedText, decodedResult) => {
+            if (decodedText) {
+              onScan(decodedText);
+              // Clean up nicely after scanning a valid code
+              html5QrCode.stop().then(() => {
+                  html5QrCode.clear();
+                  onClose();
+              }).catch(console.error);
             }
-
-            animationFrameRef.current = requestAnimationFrame(detectBarcode);
-          };
-
-          animationFrameRef.current = requestAnimationFrame(detectBarcode);
-          return;
-        }
-
-        // 2. Fallback a Quagga.js
-        const Quagga = await import('quagga').then(module => module.default);
-        QuaggaRef.current = Quagga;
-
-        await Quagga.init({
-          inputStream: {
-            name: "Live",
-            type: "LiveStream",
-            target: scannerRef.current,
-            constraints: {
-              width: 1280,
-              height: 720,
-              facingMode: "environment"
-            },
           },
-          locator: {
-            patchSize: "medium",
-            halfSample: true,
-          },
-          numOfWorkers: 2,
-          frequency: 10,
-          decoder: {
-            readers: ["ean_reader", "code_128_reader", "ean_8_reader", "code_39_reader", "upc_reader"],
-          },
-          locate: true
-        }, function (err) {
-          if (err) {
-            console.error('Error al inicializar Quagga:', err);
-            return;
+          (errorMessage) => {
+            // This triggers constantly while hunting for barcodes, safely ignore.
           }
-          Quagga.start();
-        });
-
-        Quagga.onDetected((result) => {
-          if (result?.codeResult?.code) {
-            onScan(result.codeResult.code);
-            onClose();
-          }
-        });
+        );
       } catch (err) {
-        console.error('Error al inicializar escáner:', err);
-        onClose();
+        console.error("Error inicializando escáner html5-qrcode:", err);
       }
     };
 
-    initializeScanner();
+    startScanner();
 
+    // Cleanup function when component unmounts
     return () => {
-      // Limpieza para API nativa
-      if (animationFrameRef.current) {
-        cancelAnimationFrame(animationFrameRef.current);
-      }
-
-      if (videoRef.current?.srcObject) {
-        videoRef.current.srcObject.getTracks().forEach(track => track.stop());
-        videoRef.current.srcObject = null;
-      }
-
-      if (videoRef.current && videoRef.current.parentNode) {
-        videoRef.current.parentNode.removeChild(videoRef.current);
-      }
-
-      // Limpieza para Quagga
-      if (QuaggaRef.current) {
+      if (html5QrCodeRef.current) {
         try {
-          QuaggaRef.current.offDetected();
-          QuaggaRef.current.stop();
+            if (html5QrCodeRef.current.isScanning) {
+                html5QrCodeRef.current.stop().then(() => {
+                    html5QrCodeRef.current.clear();
+                }).catch(err => console.error("Error pausando escáner:", err));
+            } else {
+                html5QrCodeRef.current.clear();
+            }
         } catch (e) {
-          console.log('Error limpiando Quagga:', e);
+            console.error("Error clearing scanner instance", e);
         }
       }
     };
   }, [onScan, onClose]);
 
   return (
-    <div ref={scannerRef} className="scanner-viewport">
-      {/* Helper visual para el usuario */}
+    <div className="scanner-viewport">
+      {/* Container required by html5-qrcode */}
+      <div id="reader"></div>
+
+      {/* Visual scanning overlay */}
       <div className="scanner-overlay">
         <div className="scanner-laser"></div>
       </div>
+
       <style>{`
-            .scanner-viewport {
-                position: relative;
-                width: 100%;
-                height: 300px;
-                overflow: hidden;
-            }
-            .scanner-viewport video {
-                width: 100%;
-                height: 100%;
-                object-fit: cover;
-            }
-            .scanner-viewport canvas {
-                display: none;
-            }
-            .scanner-overlay {
-                position: absolute;
-                top: 0;
-                left: 0;
-                right: 0;
-                bottom: 0;
-                border: 2px solid rgba(0,0,0,0.5);
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                pointer-events: none;
-                z-index: 10;
-            }
-            .scanner-laser {
-                width: 80%;
-                height: 2px;
-                background: red;
-                box-shadow: 0 0 4px red;
-                animation: scan 2s infinite;
-            }
-            @keyframes scan {
-                0% { transform: translateY(-50px); opacity: 0.5; }
-                50% { transform: translateY(50px); opacity: 1; }
-                100% { transform: translateY(-50px); opacity: 0.5; }
-            }
-        `}</style>
+        .scanner-viewport {
+            position: relative;
+            width: 100%;
+            height: 300px;
+            overflow: hidden;
+            background: #000;
+            border-radius: 8px;
+        }
+        #reader {
+            width: 100%;
+            height: 100%;
+        }
+        #reader video {
+            width: 100% !important;
+            height: 100% !important;
+            object-fit: cover !important;
+        }
+        .scanner-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            border: 2px solid rgba(0,0,0,0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            pointer-events: none;
+            z-index: 10;
+        }
+        .scanner-laser {
+            width: 80%;
+            height: 2px;
+            background: red;
+            box-shadow: 0 0 4px red;
+            animation: scan 2s infinite;
+        }
+        /* Hide unnecessary HTML5QrCode UI elements that inject automatically */
+        #reader__dashboard_section_csr,
+        #reader__dashboard_section_swaplink {
+            display: none !important;
+        }
+        @keyframes scan {
+            0% { transform: translateY(-50px); opacity: 0.5; }
+            50% { transform: translateY(50px); opacity: 1; }
+            100% { transform: translateY(-50px); opacity: 0.5; }
+        }
+      `}</style>
     </div>
   );
 };
