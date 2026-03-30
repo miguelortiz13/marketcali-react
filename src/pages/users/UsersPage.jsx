@@ -16,7 +16,7 @@ const UsersPage = () => {
     const fetchUsers = async () => {
         setLoading(true);
         try {
-            const res = await fetch('http://localhost:8088/auth/users');
+            const res = await fetch('/auth/users');
             if (res.ok) {
                 const data = await res.json();
                 setUsers(data);
@@ -35,7 +35,7 @@ const UsersPage = () => {
         if (!window.confirm('¿Estás seguro de eliminar este usuario?')) return;
 
         try {
-            const res = await fetch(`http://localhost:8088/auth/users/${id}`, {
+            const res = await fetch(`/auth/users/${id}`, {
                 method: 'DELETE'
             });
 
@@ -53,7 +53,7 @@ const UsersPage = () => {
     const handleCreate = async (e) => {
         e.preventDefault();
         try {
-            const res = await fetch('http://localhost:8088/auth/register', {
+            const res = await fetch('/auth/register', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(newUser)

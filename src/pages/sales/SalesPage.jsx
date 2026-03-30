@@ -64,7 +64,7 @@ const SalesPage = () => {
 
     const fetchProducts = async () => {
         try {
-            const res = await fetch('http://localhost:8088/api/productos');
+            const res = await fetch('/api/productos');
             if (res.ok) {
                 const data = await res.json();
                 setProducts(data);
@@ -114,7 +114,7 @@ const SalesPage = () => {
         };
 
         try {
-            const res = await fetch('http://localhost:8088/api/sales', {
+            const res = await fetch('/api/sales', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(saleRequest)

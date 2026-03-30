@@ -18,7 +18,7 @@ const RegistroProductos = () => {
   const buscarProducto = async (codigo) => {
     try {
       // Reemplaza con tu endpoint real
-      const response = await fetch(`http://localhost:8088/api/productos/codigo/${codigo}`);
+      const response = await fetch(`/api/productos/codigo/${codigo}`);
       if (response.ok) {
         const producto = await response.json();
         return producto;
@@ -99,7 +99,7 @@ const RegistroProductos = () => {
   // Guardar registro
   const guardarRegistro = async () => {
     try {
-      const response = await fetch('http://localhost:8088/api/registros', {
+      const response = await fetch('/api/registros', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

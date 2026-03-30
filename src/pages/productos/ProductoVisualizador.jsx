@@ -12,7 +12,7 @@ function ProductoVisualizador() {
   useEffect(() => {
     const fetchProducto = async () => {
       try {
-        const response = await fetch(`http://localhost:8080/api/productos/${id}`, {
+        const response = await fetch(`/api/productos/${id}`, {
           mode: "cors",
           headers: {
             "Content-Type": "application/json",

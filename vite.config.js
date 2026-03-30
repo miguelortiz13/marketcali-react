@@ -6,7 +6,10 @@ export default defineConfig({
   plugins: [react()],
   server: {
     proxy: {
-      "/api/productos": {
+      "/api": {
+        target: "http://localhost:8088",
+      },
+      "/auth": {
         target: "http://localhost:8088",
       },
     },

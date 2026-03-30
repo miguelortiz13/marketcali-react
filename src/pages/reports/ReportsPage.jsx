@@ -14,7 +14,7 @@ const ReportsPage = () => {
 
     const fetchSales = async () => {
         try {
-            const res = await fetch('http://localhost:8088/api/sales');
+            const res = await fetch('/api/sales');
             if (res.ok) {
                 const data = await res.json();
                 // Sort by date desc
@@ -47,7 +47,7 @@ const ReportsPage = () => {
     }, [searchTerm, dateFilter, sales]);
 
     const downloadInvoice = (saleId) => {
-        window.open(`http://localhost:8088/api/sales/${saleId}/invoice`, '_blank');
+        window.open(`/api/sales/${saleId}/invoice`, '_blank');
     };
 
     return (

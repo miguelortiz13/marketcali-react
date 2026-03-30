@@ -12,7 +12,7 @@ const Topbar = () => {
         const checkStatus = async () => {
             try {
                 // You can replace this with a real fetch to a health endpoint
-                // const res = await fetch('http://localhost:8088/actuator/health');
+                // const res = await fetch('/actuator/health');
                 // if (res.ok) setStatus('online');
                 setStatus('online');
             } catch (error) {
