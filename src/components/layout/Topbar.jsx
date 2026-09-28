@@ -31,7 +31,7 @@ const Topbar = () => {
             {/* Left section: Store branding & Status */}
             <div className="topbar-left">
                 <div className="store-pill">
-                    <span className="store-name">MarketCali Sede Principal</span>
+                    <span className="store-name">NexPOS Sede Principal</span>
                     <span className="divider">•</span>
                     <span className="status-badge online">
                         <FaCircle className="status-pulse-dot" /> En Línea

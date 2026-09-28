@@ -192,7 +192,7 @@ const ReportsPage = () => {
         const encodedUri = encodeURI(csvContent);
         const link = document.createElement('a');
         link.setAttribute('href', encodedUri);
-        link.setAttribute('download', `reporte_ventas_marketcali_${new Date().toISOString().slice(0, 10)}.csv`);
+        link.setAttribute('download', `reporte_ventas_nexpos_${new Date().toISOString().slice(0, 10)}.csv`);
         document.body.appendChild(link);
         link.click();
         link.remove();
@@ -204,7 +204,7 @@ const ReportsPage = () => {
             const url = window.URL.createObjectURL(new Blob([response.data], { type: 'application/pdf' }));
             const link = document.createElement('a');
             link.href = url;
-            link.setAttribute('download', `factura_marketcali_${saleId}.pdf`);
+            link.setAttribute('download', `factura_nexpos_${saleId}.pdf`);
             document.body.appendChild(link);
             link.click();
             link.remove();

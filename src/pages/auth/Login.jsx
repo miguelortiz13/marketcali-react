@@ -48,11 +48,11 @@ const Login = () => {
                     <div className="banner-content">
                         <div className="banner-logo">
                             <FaStore className="banner-logo-icon" />
-                            <span>MarketCali</span>
+                            <span>NexPOS</span>
                         </div>
                         <h2>Gestión Inteligente de Inventario y Ventas</h2>
                         <p>
-                            Plataforma integral diseñada para la agilidad de cajeros y el control total de administradores de supermercados.
+                            Plataforma integral de punto de venta diseñada para la agilidad de cajeros y el control total de comercios retail.
                         </p>
                         <div className="banner-features">
                             <div className="feature-pill">
@@ -69,7 +69,7 @@ const Login = () => {
                 <div className="login-card">
                     <div className="login-header">
                         <div className="mobile-logo">
-                            <FaStore /> MarketCali
+                            <FaStore /> NexPOS
                         </div>
                         <h3>Iniciar Sesión</h3>
                         <p className="login-desc">Ingresa tus credenciales para acceder al sistema</p>
@@ -144,7 +144,7 @@ const Login = () => {
 
                     <div className="login-footer">
                         <FaShieldAlt className="shield-icon" />
-                        <span>MarketCali v2.0 • Sistema Seguro</span>
+                        <span>NexPOS v2.0 • Sistema Seguro</span>
                     </div>
                 </div>
             </div>

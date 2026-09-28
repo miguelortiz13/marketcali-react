@@ -38,7 +38,7 @@ const Sidebar = ({ collapsed, setCollapsed }) => {
                     </div>
                     {!collapsed && (
                         <div className="brand-text">
-                            <span className="brand-name">MarketCali</span>
+                            <span className="brand-name">NexPOS</span>
                             <span className="brand-tagline">POS & Retail</span>
                         </div>
                     )}

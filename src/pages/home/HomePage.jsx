@@ -21,17 +21,17 @@ function HomePage() {
       {/* Welcome Hero / Operational Banner */}
       <section className="home-hero-banner">
         <div className="hero-badge">
-          <FaStore /> MarketCali POS & Retail v2.0
+          <FaStore /> NexPOS Retail v2.0
         </div>
         <h1 className="hero-main-title">
           {isAuthenticated
             ? `¡Hola de nuevo, ${user?.username || 'Usuario'}!`
-            : "Sistema de Gestión y Punto de Venta MarketCali"}
+            : "Sistema de Punto de Venta & Gestión Comercial NexPOS"}
         </h1>
         <p className="hero-main-desc">
           {isAuthenticated
             ? `Tu terminal está lista para operar. Selecciona un módulo para comenzar tu jornada de trabajo.`
-            : "Plataforma integral de inventario, punto de venta y facturación optimizada para supermercados y minimarkets."}
+            : "Plataforma integral de inventario, punto de venta y facturación optimizada para comercio retail."}
         </p>
 
         {!isAuthenticated && (
@@ -117,7 +117,7 @@ function HomePage() {
 
       {/* System Features Highlights */}
       <section className="features-highlight-section">
-        <h2 className="section-heading">Garantías Operativas MarketCali</h2>
+        <h2 className="section-heading">Garantías Operativas NexPOS</h2>
 
         <div className="system-features-grid">
           <div className="system-feature-item">

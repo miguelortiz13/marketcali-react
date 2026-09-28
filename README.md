@@ -1,4 +1,4 @@
-# 🛒 MarketCali - Frontend Web Application
+# ⚡ NexPOS - Modern Retail & Point of Sale Frontend
 
 [![React 18](https://img.shields.io/badge/React-18.3.1-61DAFB?style=for-the-badge&logo=react&logoColor=black)](https://react.dev/)
 [![Vite](https://img.shields.io/badge/Vite-5.2-646CFF?style=for-the-badge&logo=vite&logoColor=white)](https://vitejs.dev/)
@@ -8,7 +8,7 @@
 [![Docker](https://img.shields.io/badge/Docker-Containerized-2496ED?style=for-the-badge&logo=docker&logoColor=white)](https://www.docker.com/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=for-the-badge)](LICENSE)
 
-**MarketCali Frontend** es la aplicación web interactiva de **Punto de Venta (POS) y Administración de Supermercados**. Construida sobre **React 18** y empaquetada con **Vite**, ofrece una experiencia fluida, rápida y ergonómica tanto para cajeros en terminales de alta velocidad como para gerentes de inventario y administradores comerciales.
+**NexPOS Frontend** es la aplicación web interactiva de **Punto de Venta (POS) y Gestión Comercial Multirrubro** (supermercados, droguerías, ferreterías, tiendas de conveniencia y comercio minorista). Construida sobre **React 18** y empaquetada con **Vite**, ofrece una experiencia fluida, rápida y ergonómica tanto para cajeros en terminales de alta velocidad como para gerentes de inventario y administradores comerciales. *(Nombre de código del repositorio: marketcali-react)*.
 
 > 📚 **Documentación Estratégica Completa:**
 > - [📘 Guía Maestra del Ciclo de Vida de Desarrollo de Software (SDLC)](https://github.com/miguelortiz13/marketcali-backend/blob/master/docs/SDLC_GUIDE.md)

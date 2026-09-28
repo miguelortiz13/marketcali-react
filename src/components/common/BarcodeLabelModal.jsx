@@ -105,7 +105,7 @@ const BarcodeLabelModal = ({ product, isOpen, onClose }) => {
                                     /* Etiqueta de Góndola (Estantería) */
                                     <div className="shelf-label-layout">
                                         <div className="label-top-brand">
-                                            <span className="store-tag"><FaStore /> MarketCali</span>
+                                            <span className="store-tag"><FaStore /> NexPOS</span>
                                             <span className="product-category-tag">{product.categoria || 'General'}</span>
                                         </div>
 
@@ -136,7 +136,7 @@ const BarcodeLabelModal = ({ product, isOpen, onClose }) => {
                                     /* Sticker Adhesivo Compacto */
                                     <div className="compact-label-layout">
                                         <div className="compact-header">
-                                            <span className="compact-store">MarketCali</span>
+                                            <span className="compact-store">NexPOS</span>
                                             <strong className="compact-price">{formatCOP(product.precio)}</strong>
                                         </div>
                                         <div className="compact-title">{product.nombre}</div>

@@ -451,7 +451,7 @@ const ProductosCRUD = () => {
     return (
       <div className="crud-loading-view">
         <div className="loading-spinner"></div>
-        <p>Cargando inventario de MarketCali...</p>
+        <p>Cargando inventario de NexPOS...</p>
       </div>
     );
   }
