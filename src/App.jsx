@@ -1,13 +1,11 @@
 import { Routes, Route } from "react-router-dom";
-import Navbar from "./components/Navbar";
-import Footer from "./components/Footer";
 import Layout from "./components/layout/Layout";
+import ProtectedRoute from "./components/auth/ProtectedRoute";
 import HomePage from "./pages/HomePage";
 import About from "./pages/others/About";
 import Producto from "./pages/productos/Producto";
 import ProductoVisualizador from "./pages/productos/ProductoVisualizador";
-import ProductoCRUD from "./pages/productos/ProductoCRUD"
-import RegistroProducto from "./pages/registros/RegistroProducto";
+import ProductoCRUD from "./pages/productos/ProductoCRUD";
 import SalesPage from "./pages/sales/SalesPage";
 import ReportsPage from "./pages/reports/ReportsPage";
 import UsersPage from "./pages/users/UsersPage";
@@ -16,21 +14,62 @@ import Login from "./pages/auth/Login";
 function App() {
   return (
     <div className="app-container">
-      <Layout>
-        <Routes>
-          {/* Rutas públicas */}
-          <Route path="/" element={<HomePage />} />
-          <Route path="/sobrenosotros" element={<About />} />
-          <Route path="/productos" element={<Producto />} />
-          <Route path="/producto/:id" element={<ProductoVisualizador />} />
-          <Route path="/admin/productos" element={<ProductoCRUD />} />
-          <Route path="/registro/productos" element={<RegistroProducto />} />
-          <Route path="/sales" element={<SalesPage />} />
-          <Route path="/reports" element={<ReportsPage />} />
-          <Route path="/users" element={<UsersPage />} />
-          <Route path="/login" element={<Login />} />
-        </Routes>
-      </Layout>
+      <Routes>
+        {/* Login limpio e independiente */}
+        <Route path="/login" element={<Login />} />
+
+        {/* Rutas enmarcadas en el Layout de la aplicación */}
+        <Route
+          path="/*"
+          element={
+            <Layout>
+              <Routes>
+                {/* Rutas públicas */}
+                <Route path="/" element={<HomePage />} />
+                <Route path="/sobrenosotros" element={<About />} />
+                <Route path="/productos" element={<Producto />} />
+                <Route path="/producto/:id" element={<ProductoVisualizador />} />
+
+                {/* Rutas protegidas: Cajeros / Usuarios autenticados */}
+                <Route
+                  path="/sales"
+                  element={
+                    <ProtectedRoute>
+                      <SalesPage />
+                    </ProtectedRoute>
+                  }
+                />
+
+                {/* Rutas protegidas: Exclusivas para ADMIN */}
+                <Route
+                  path="/admin/productos"
+                  element={
+                    <ProtectedRoute requiredRole="ADMIN">
+                      <ProductoCRUD />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="/reports"
+                  element={
+                    <ProtectedRoute requiredRole="ADMIN">
+                      <ReportsPage />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="/users"
+                  element={
+                    <ProtectedRoute requiredRole="ADMIN">
+                      <UsersPage />
+                    </ProtectedRoute>
+                  }
+                />
+              </Routes>
+            </Layout>
+          }
+        />
+      </Routes>
     </div>
   );
 }
