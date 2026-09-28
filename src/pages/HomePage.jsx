@@ -1,130 +1,147 @@
 import { Link } from "react-router-dom";
+import {
+  FaCashRegister,
+  FaBoxes,
+  FaChartBar,
+  FaUsers,
+  FaCheckCircle,
+  FaArrowRight,
+  FaStore,
+  FaShieldAlt,
+  FaBarcode
+} from "react-icons/fa";
+import { useAuth } from "../context/AuthContext";
+import "../css/HomePage.css";
 
 function HomePage() {
+  const { user, isAuthenticated, isAdmin } = useAuth();
+
   return (
-    <div className="home-page">
-      {/* Hero Section */}
-      <section className="hero-section">
-        <div className="hero-container">
-          <h1 className="hero-title">Bienvenido a MarketCali</h1>
-          <p className="hero-description">
-            La solución completa para la gestión de tu negocio. Controla
-            inventarios, ventas y facturación en un solo lugar.
-          </p>
-          <div className="hero-buttons">
-            <Link to="/productos" className="hero-button primary">
-              Explorar Productos
-            </Link>
-            <Link to="/login" className="hero-button outline">
-              Panel Administrativo
+    <div className="home-dashboard">
+      {/* Welcome Hero / Operational Banner */}
+      <section className="home-hero-banner">
+        <div className="hero-badge">
+          <FaStore /> MarketCali POS & Retail v2.0
+        </div>
+        <h1 className="hero-main-title">
+          {isAuthenticated
+            ? `¡Hola de nuevo, ${user?.username || 'Usuario'}!`
+            : "Sistema de Gestión y Punto de Venta MarketCali"}
+        </h1>
+        <p className="hero-main-desc">
+          {isAuthenticated
+            ? `Tu terminal está lista para operar. Selecciona un módulo para comenzar tu jornada de trabajo.`
+            : "Plataforma integral de inventario, punto de venta y facturación optimizada para supermercados y minimarkets."}
+        </p>
+
+        {!isAuthenticated && (
+          <div className="hero-cta-group">
+            <Link to="/login" className="btn-hero-primary">
+              <span>Iniciar Sesión en el Sistema</span>
+              <FaArrowRight />
             </Link>
           </div>
-        </div>
+        )}
       </section>
 
-      {/* Features Section */}
-      <section className="features-section">
-        <div className="features-container">
-          <h2 className="section-title">Potencia tu negocio con MarketCali</h2>
+      {/* Quick Operational Shortcuts for Cashiers and Admins */}
+      {isAuthenticated && (
+        <section className="operational-shortcuts-section">
+          <h2 className="section-heading">Accesos Rápidos del Sistema</h2>
 
-          <div className="features-grid">
-            {[
-              {
-                icon: "📊",
-                title: "Reportes en Tiempo Real",
-                description:
-                  "Genera reportes detallados de ventas e inventario al instante.",
-              },
-              {
-                icon: "📦",
-                title: "Gestión de Inventario",
-                description:
-                  "Controla tu stock por categorías, marcas y códigos de barras.",
-              },
-              {
-                icon: "🧑‍💼",
-                title: "Control de Accesos",
-                description:
-                  "Asigna permisos diferenciados para cada tipo de usuario.",
-              },
-            ].map((feature, index) => (
-              <div key={index} className="feature-card">
-                <div className="feature-icon">{feature.icon}</div>
-                <h3 className="feature-title">{feature.title}</h3>
-                <p className="feature-description">{feature.description}</p>
+          <div className="shortcuts-grid">
+            {/* POS Shortcut - Always visible to authenticated users */}
+            <Link to="/sales" className="shortcut-card pos-featured">
+              <div className="shortcut-icon-box pos-icon-box">
+                <FaCashRegister />
               </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* User Types Section */}
-      <section className="user-types-section">
-        <div className="user-types-container">
-          <h2 className="section-title">Diseñado para todos los usuarios</h2>
-
-          <div className="user-types-grid">
-            {[
-              {
-                type: "Administradores",
-                features: [
-                  "Gestión completa del sistema",
-                  "Configuración de permisos",
-                  "Generación de reportes",
-                ],
-              },
-              {
-                type: "Empleados",
-                features: [
-                  "Registro de ventas",
-                  "Gestión de productos",
-                  "Generación de facturas",
-                ],
-              },
-              {
-                type: "Clientes",
-                features: [
-                  "Consulta de productos",
-                  "Visualización de facturas",
-                  "Historial de compras",
-                ],
-              },
-            ].map((userType, index) => (
-              <div key={index} className="user-type-card">
-                <h3
-                  className={`user-type-title ${userType.type.toLowerCase()}`}
-                >
-                  {userType.type}
-                </h3>
-                <ul className="user-type-features">
-                  {userType.features.map((feature, idx) => (
-                    <li key={idx} className="feature-item">
-                      <span className="check-icon">✓</span>
-                      <span>{feature}</span>
-                    </li>
-                  ))}
-                </ul>
+              <div className="shortcut-content">
+                <div className="shortcut-tag">OPERACIÓN DIARIA</div>
+                <h3>Punto de Venta (POS)</h3>
+                <p>Cobro ágil con lector de código de barras, cálculo de cambio y facturas PDF.</p>
               </div>
-            ))}
-          </div>
-        </div>
-      </section>
+              <div className="shortcut-arrow">
+                <FaArrowRight />
+              </div>
+            </Link>
 
-      {/* CTA Section */}
-      <section className="cta-section">
-        <div className="cta-container">
-          <h2 className="cta-title">¿Listo para transformar tu negocio?</h2>
-          <p className="cta-description">
-            Comienza hoy mismo con MarketCali y lleva tu gestión al siguiente
-            nivel.
-          </p>
-          <div className="cta-buttons">
-            <Link to="/login" className="cta-button primary">
-              Iniciar Sesión
-            </Link>
-            <Link to="/contact" className="cta-button outline">
-              Contactar Soporte
-            </Link>
+            {/* Inventory Shortcut - Admin only */}
+            {isAdmin && (
+              <>
+                <Link to="/admin/productos" className="shortcut-card">
+                  <div className="shortcut-icon-box">
+                    <FaBoxes />
+                  </div>
+                  <div className="shortcut-content">
+                    <div className="shortcut-tag">CONTROL DE STOCK</div>
+                    <h3>Inventario de Productos</h3>
+                    <p>Alta de productos, actualización de precios y alertas de agotados.</p>
+                  </div>
+                  <div className="shortcut-arrow">
+                    <FaArrowRight />
+                  </div>
+                </Link>
+
+                <Link to="/reports" className="shortcut-card">
+                  <div className="shortcut-icon-box">
+                    <FaChartBar />
+                  </div>
+                  <div className="shortcut-content">
+                    <div className="shortcut-tag">FINANZAS</div>
+                    <h3>Reporte de Ventas</h3>
+                    <p>Historial consolidado de facturación, ticket promedio e ingresos.</p>
+                  </div>
+                  <div className="shortcut-arrow">
+                    <FaArrowRight />
+                  </div>
+                </Link>
+
+                <Link to="/users" className="shortcut-card">
+                  <div className="shortcut-icon-box">
+                    <FaUsers />
+                  </div>
+                  <div className="shortcut-content">
+                    <div className="shortcut-tag">SEGURIDAD</div>
+                    <h3>Usuarios y Cajeros</h3>
+                    <p>Gestión de personal de caja y administración con roles protegidos.</p>
+                  </div>
+                  <div className="shortcut-arrow">
+                    <FaArrowRight />
+                  </div>
+                </Link>
+              </>
+            )}
+          </div>
+        </section>
+      )}
+
+      {/* System Features Highlights */}
+      <section className="features-highlight-section">
+        <h2 className="section-heading">Garantías Operativas MarketCali</h2>
+
+        <div className="system-features-grid">
+          <div className="system-feature-item">
+            <div className="feature-icon-circle">
+              <FaBarcode />
+            </div>
+            <h4>Lectura Óptica Inmediata</h4>
+            <p>Compatible con lectores láser USB y escáner de cámara integrado para un cobro veloz.</p>
+          </div>
+
+          <div className="system-feature-item">
+            <div className="feature-icon-circle">
+              <FaShieldAlt />
+            </div>
+            <h4>Deducción de Stock Transaccional</h4>
+            <p>Transacciones atómicas ACID que previenen sobreventas y descuadres de inventario.</p>
+          </div>
+
+          <div className="system-feature-item">
+            <div className="feature-icon-circle">
+              <FaCheckCircle />
+            </div>
+            <h4>Facturación y Medios de Pago</h4>
+            <p>Soporte para Efectivo con cálculo de vuelto exacto, Tarjetas y transferencias móviles.</p>
           </div>
         </div>
       </section>

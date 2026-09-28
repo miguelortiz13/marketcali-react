@@ -1,70 +1,83 @@
 import { useState, useEffect } from 'react';
-import { FaSearch, FaBell, FaUserCircle } from 'react-icons/fa';
+import { FaUserCircle, FaSignOutAlt, FaCashRegister, FaCircle } from 'react-icons/fa';
+import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../../context/AuthContext';
 import './Topbar.css';
 
 const Topbar = () => {
-    const [status, setStatus] = useState('offline'); // online, offline, checking
-    const [searchTerm, setSearchTerm] = useState('');
-    const [user, setUser] = useState({ name: 'Invitado', role: 'GUEST' });
+    const [currentTime, setCurrentTime] = useState(new Date());
+    const { user, isAuthenticated, isAdmin, logout } = useAuth();
+    const navigate = useNavigate();
 
     useEffect(() => {
-        // Simulating status check
-        const checkStatus = async () => {
-            try {
-                // You can replace this with a real fetch to a health endpoint
-                // const res = await fetch('/actuator/health');
-                // if (res.ok) setStatus('online');
-                setStatus('online');
-            } catch (error) {
-                setStatus('offline');
-            }
-        };
-
-        checkStatus();
-        const interval = setInterval(checkStatus, 30000); // Check every 30s
-        return () => clearInterval(interval);
+        const timer = setInterval(() => setCurrentTime(new Date()), 1000);
+        return () => clearInterval(timer);
     }, []);
 
-    useEffect(() => {
-        // Get user from local storage or context (mocking for now)
-        const token = localStorage.getItem('token');
-        if (token) {
-            // Here you would decode the token or fetch legacy user data
-            setUser({ name: 'Admin', role: 'ADMIN' });
-        }
-    }, []);
+    const handleLogout = () => {
+        logout();
+        navigate('/login');
+    };
+
+    const formattedTime = currentTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    const formattedDate = currentTime.toLocaleDateString('es-CO', {
+        weekday: 'short',
+        day: 'numeric',
+        month: 'short'
+    });
 
     return (
         <header className="topbar">
+            {/* Left section: Store branding & Status */}
             <div className="topbar-left">
-                <div className="search-bar">
-                    <FaSearch className="search-icon" />
-                    <input
-                        type="text"
-                        placeholder="Buscar global..."
-                        value={searchTerm}
-                        onChange={(e) => setSearchTerm(e.target.value)}
-                    />
+                <div className="store-pill">
+                    <span className="store-name">MarketCali Sede Principal</span>
+                    <span className="divider">•</span>
+                    <span className="status-badge online">
+                        <FaCircle className="status-pulse-dot" /> En Línea
+                    </span>
                 </div>
             </div>
 
+            {/* Right section: Quick actions, Live Clock, User Profile */}
             <div className="topbar-right">
-                <div className="status-indicator" title={`System Status: ${status}`}>
-                    <span className={`status-dot ${status}`}></span>
-                    <span className="status-text">{status === 'online' ? 'Online' : 'Offline'}</span>
+                {isAuthenticated && (
+                    <button
+                        className="btn-quick-pos"
+                        onClick={() => navigate('/sales')}
+                        title="Ir directo a Punto de Venta"
+                    >
+                        <FaCashRegister />
+                        <span>Abrir POS</span>
+                    </button>
+                )}
+
+                <div className="live-clock">
+                    <span className="clock-time">{formattedTime}</span>
+                    <span className="clock-date">{formattedDate}</span>
                 </div>
 
-                <div className="notifications">
-                    <FaBell />
-                    <span className="badge">3</span>
-                </div>
+                <div className="topbar-divider"></div>
 
                 <div className="user-profile">
-                    <div className="user-info">
-                        <span className="user-name">{user.name}</span>
-                        <span className="user-role">{user.role}</span>
+                    <div className="user-avatar-badge">
+                        {user?.username ? user.username.charAt(0).toUpperCase() : 'U'}
                     </div>
-                    <FaUserCircle className="user-avatar" />
+                    <div className="user-info">
+                        <span className="user-name">{user?.username || (isAuthenticated ? 'Usuario' : 'Invitado')}</span>
+                        <span className="user-role">
+                            {isAdmin ? 'ADMINISTRADOR' : (isAuthenticated ? 'CAJERO' : 'INVITADO')}
+                        </span>
+                    </div>
+                    {isAuthenticated && (
+                        <button
+                            onClick={handleLogout}
+                            className="btn-topbar-logout"
+                            title="Cerrar Sesión"
+                        >
+                            <FaSignOutAlt />
+                        </button>
+                    )}
                 </div>
             </div>
         </header>

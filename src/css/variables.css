@@ -1,38 +1,99 @@
 :root {
-  /* Colores principales */
-  --primary: #3b82f6;
-  --primary-dark: #2563eb;
-  --primary-light: #93c5fd;
-  --secondary: #8b5cf6;
+  /* Marca Principal - Retail & Frescura MarketCali */
+  --primary: #059669;
+  --primary-hover: #047857;
+  --primary-dark: #064e3b;
+  --primary-light: #ecfdf5;
+  --primary-border: #a7f3d0;
+  --primary-focus: rgba(5, 150, 105, 0.2);
 
-  /* Escala de grises */
-  --gray-50: #f9fafb;
-  --gray-100: #f3f4f6;
-  --gray-200: #e5e7eb;
-  --gray-300: #d1d5db;
-  --gray-400: #9ca3af;
-  --gray-500: #6b7280;
-  --gray-600: #4b5563;
-  --gray-700: #374151;
-  --gray-800: #1f2937;
-  --gray-900: #111827;
+  /* Acento & Secundario */
+  --secondary: #3b82f6;
+  --secondary-hover: #2563eb;
+  --secondary-light: #eff6ff;
 
-  /* Colores adicionales */
+  /* Escala de Grises / Slate */
+  --gray-25: #fcfcfd;
+  --gray-50: #f8fafc;
+  --gray-100: #f1f5f9;
+  --gray-200: #e2e8f0;
+  --gray-300: #cbd5e1;
+  --gray-400: #94a3b8;
+  --gray-500: #64748b;
+  --gray-600: #475569;
+  --gray-700: #334155;
+  --gray-800: #1e293b;
+  --gray-900: #0f172a;
+
+  /* Superficies & Fondos */
+  --bg-app: #f8fafc;
+  --surface-card: #ffffff;
+  --surface-muted: #f8fafc;
+  --surface-hover: #f1f5f9;
+  --border-color: #e2e8f0;
+  --border-subtle: #f1f5f9;
+
+  /* Textos */
+  --text-main: #0f172a;
+  --text-muted: #64748b;
+  --text-subtle: #94a3b8;
+  --text-inverse: #ffffff;
+
+  /* Estados Funcionales */
+  --success: #10b981;
+  --success-bg: #ecfdf5;
+  --success-border: #a7f3d0;
+  --success-text: #065f46;
+
+  --warning: #f59e0b;
+  --warning-bg: #fffbeb;
+  --warning-border: #fde68a;
+  --warning-text: #92400e;
+
+  --danger: #ef4444;
+  --danger-bg: #fef2f2;
+  --danger-border: #fecaca;
+  --danger-text: #991b1b;
+
+  --info: #0284c7;
+  --info-bg: #f0f9ff;
+  --info-border: #bae6fd;
+  --info-text: #075985;
+
+  /* Radios */
+  --radius-xs: 4px;
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 14px;
+  --radius-xl: 20px;
+  --radius-full: 9999px;
+
+  /* Sombras Modernas */
+  --shadow-xs: 0 1px 2px 0 rgba(15, 23, 42, 0.04);
+  --shadow-sm: 0 1px 3px 0 rgba(15, 23, 42, 0.08), 0 1px 2px -1px rgba(15, 23, 42, 0.06);
+  --shadow-md: 0 4px 6px -1px rgba(15, 23, 42, 0.08), 0 2px 4px -2px rgba(15, 23, 42, 0.04);
+  --shadow-lg: 0 10px 15px -3px rgba(15, 23, 42, 0.08), 0 4px 6px -4px rgba(15, 23, 42, 0.03);
+  --shadow-xl: 0 20px 25px -5px rgba(15, 23, 42, 0.1), 0 8px 10px -6px rgba(15, 23, 42, 0.04);
+
+  /* Transición & Dimensiones */
+  --header-height: 4rem;
+  --sidebar-width: 260px;
+  --sidebar-collapsed-width: 76px;
+  --transition-fast: 0.15s ease;
+  --transition-base: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-smooth: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+
+  /* Compatibilidad con variables legacy */
   --white: #ffffff;
   --black: #000000;
-  --blue-100: #dbeafe;
-  --blue-400: #60a5fa;
-  --blue-600: #2563eb;
-  --blue-800: #1e40af;
-  --indigo-500: #6366f1;
-  --indigo-600: #4f46e5;
-  --purple-500: #8b5cf6;
-  --purple-600: #7c3aed;
-  --green-500: #10b981;
-
-  /* Tamaños */
-  --header-height: 4rem;
-  --container-width: 1200px;
-  --border-radius: 0.5rem;
-  --transition: all 0.3s ease;
+  --border-radius: var(--radius-md);
+  --transition: var(--transition-base);
+  --primary-color: var(--primary);
+  --danger-color: var(--danger);
+  --success-color: var(--success);
+  --warning-color: var(--warning);
+  --dark-color: var(--gray-800);
+  --light-color: var(--gray-50);
+  --gray-color: var(--gray-500);
+  --gray-light: var(--gray-200);
 }

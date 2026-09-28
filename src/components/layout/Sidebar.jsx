@@ -1,84 +1,150 @@
-import { useState } from 'react';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 import {
     FaBox,
     FaShoppingCart,
     FaChartBar,
     FaUsers,
-    FaCog,
     FaChevronLeft,
     FaChevronRight,
-    FaHome
+    FaHome,
+    FaSignOutAlt,
+    FaSignInAlt,
+    FaStore,
+    FaCashRegister
 } from 'react-icons/fa';
+import { useAuth } from '../../context/AuthContext';
 import './Sidebar.css';
 
 const Sidebar = ({ collapsed, setCollapsed }) => {
+    const { isAuthenticated, isAdmin, user, logout } = useAuth();
+    const navigate = useNavigate();
+
     const toggleCollapse = () => {
         setCollapsed(!collapsed);
     };
 
-    const user = JSON.parse(localStorage.getItem('user') || '{}');
-    const isAdmin = user.role === 'ADMIN';
+    const handleLogout = () => {
+        logout();
+        navigate('/login');
+    };
 
     return (
-        <div className={`sidebar ${collapsed ? 'collapsed' : ''}`}>
+        <aside className={`sidebar ${collapsed ? 'collapsed' : ''}`}>
+            {/* Header / Brand */}
             <div className="sidebar-header">
-                {!collapsed && <span className="brand-name">MarketCali</span>}
-                <button className="collapse-btn" onClick={toggleCollapse}>
+                <div className="brand-wrapper">
+                    <div className="brand-logo-icon">
+                        <FaStore />
+                    </div>
+                    {!collapsed && (
+                        <div className="brand-text">
+                            <span className="brand-name">MarketCali</span>
+                            <span className="brand-tagline">POS & Retail</span>
+                        </div>
+                    )}
+                </div>
+                <button
+                    className="collapse-btn"
+                    onClick={toggleCollapse}
+                    title={collapsed ? "Expandir menú" : "Colapsar menú"}
+                    aria-label="Toggle sidebar"
+                >
                     {collapsed ? <FaChevronRight /> : <FaChevronLeft />}
                 </button>
             </div>
 
+            {/* Navigation Groups */}
             <nav className="sidebar-nav">
-                <ul>
-                    <li>
-                        <NavLink to="/" className={({ isActive }) => (isActive ? 'active' : '')} end>
-                            <FaHome className="nav-icon" />
-                            {!collapsed && <span className="nav-text">Inicio</span>}
-                        </NavLink>
-                    </li>
-
-                    {isAdmin && (
+                {/* General */}
+                <div className="nav-group">
+                    {!collapsed && <span className="nav-group-label">PRINCIPAL</span>}
+                    <ul>
                         <li>
-                            <NavLink to="/admin/productos" className={({ isActive }) => (isActive ? 'active' : '')}>
-                                <FaBox className="nav-icon" />
-                                {!collapsed && <span className="nav-text">Inventario</span>}
+                            <NavLink to="/" className={({ isActive }) => (isActive ? 'active' : '')} end>
+                                <FaHome className="nav-icon" />
+                                {!collapsed && <span className="nav-text">Inicio</span>}
                             </NavLink>
                         </li>
-                    )}
+                    </ul>
+                </div>
 
-                    <li>
-                        <NavLink to="/sales" className={({ isActive }) => (isActive ? 'active' : '')}>
-                            <FaShoppingCart className="nav-icon" />
-                            {!collapsed && <span className="nav-text">Ventas</span>}
-                        </NavLink>
-                    </li>
+                {/* POS Operations */}
+                {isAuthenticated && (
+                    <div className="nav-group">
+                        {!collapsed && <span className="nav-group-label">PUNTO DE VENTA</span>}
+                        <ul>
+                            <li>
+                                <NavLink to="/sales" className={({ isActive }) => `pos-link ${isActive ? 'active' : ''}`}>
+                                    <FaCashRegister className="nav-icon pos-icon" />
+                                    {!collapsed && (
+                                        <div className="nav-text-container">
+                                            <span className="nav-text">Caja / POS</span>
+                                            <span className="pos-badge">VENTAS</span>
+                                        </div>
+                                    )}
+                                </NavLink>
+                            </li>
+                        </ul>
+                    </div>
+                )}
 
-                    {isAdmin && (
-                        <>
+                {/* Admin Management */}
+                {isAdmin && (
+                    <div className="nav-group">
+                        {!collapsed && <span className="nav-group-label">ADMINISTRACIÓN</span>}
+                        <ul>
+                            <li>
+                                <NavLink to="/admin/productos" className={({ isActive }) => (isActive ? 'active' : '')}>
+                                    <FaBox className="nav-icon" />
+                                    {!collapsed && <span className="nav-text">Inventario</span>}
+                                </NavLink>
+                            </li>
                             <li>
                                 <NavLink to="/reports" className={({ isActive }) => (isActive ? 'active' : '')}>
                                     <FaChartBar className="nav-icon" />
-                                    {!collapsed && <span className="nav-text">Reportes</span>}
+                                    {!collapsed && <span className="nav-text">Reportes de Venta</span>}
                                 </NavLink>
                             </li>
                             <li>
                                 <NavLink to="/users" className={({ isActive }) => (isActive ? 'active' : '')}>
                                     <FaUsers className="nav-icon" />
-                                    {!collapsed && <span className="nav-text">Usuarios</span>}
+                                    {!collapsed && <span className="nav-text">Usuarios y Cajeros</span>}
                                 </NavLink>
                             </li>
-                            <li>
-                                <NavLink to="/config" className={({ isActive }) => (isActive ? 'active' : '')}>
-                                    <FaCog className="nav-icon" />
-                                    {!collapsed && <span className="nav-text">Configuración</span>}
-                                </NavLink>
-                            </li>
-                        </>
-                    )}
-                </ul>
+                        </ul>
+                    </div>
+                )}
             </nav>
-        </div>
+
+            {/* Footer / User Profile & Logout */}
+            <div className="sidebar-footer">
+                {isAuthenticated ? (
+                    <div className="sidebar-user-card">
+                        {!collapsed && (
+                            <div className="user-info-meta">
+                                <span className="user-name-display">{user?.username || 'Usuario'}</span>
+                                <span className="user-role-badge">
+                                    {isAdmin ? 'ADMINISTRADOR' : 'CAJERO'}
+                                </span>
+                            </div>
+                        )}
+                        <button
+                            onClick={handleLogout}
+                            className="btn-sidebar-logout"
+                            title="Cerrar Sesión"
+                        >
+                            <FaSignOutAlt />
+                            {!collapsed && <span>Salir</span>}
+                        </button>
+                    </div>
+                ) : (
+                    <NavLink to="/login" className="btn-sidebar-login">
+                        <FaSignInAlt />
+                        {!collapsed && <span>Iniciar Sesión</span>}
+                    </NavLink>
+                )}
+            </div>
+        </aside>
     );
 };
 

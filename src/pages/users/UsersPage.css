@@ -1,185 +1,288 @@
-.users-container {
-    padding: 30px;
-    background: white;
-    border-radius: 10px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
-    height: calc(100vh - 100px);
+@import "../../css/variables.css";
+
+.users-dashboard-container {
+    max-width: 1100px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
 }
 
-.users-header {
+/* Header */
+.users-top-bar {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 25px;
+    flex-wrap: wrap;
+    gap: 1rem;
 }
 
-.users-header h2 {
+.users-top-bar h2 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--gray-900);
     display: flex;
     align-items: center;
-    gap: 10px;
-    color: #2d3748;
+    gap: 0.6rem;
+    margin-bottom: 0.2rem;
 }
 
-.add-btn {
-    background-color: #4299e1;
+.users-top-bar h2 svg {
+    color: var(--primary);
+}
+
+.users-subtitle {
+    font-size: 0.88rem;
+    color: var(--gray-500);
+}
+
+.btn-add-user {
+    background: linear-gradient(135deg, var(--primary), var(--primary-hover));
     color: white;
     border: none;
-    padding: 10px 20px;
-    border-radius: 5px;
-    cursor: pointer;
+    padding: 0.75rem 1.4rem;
+    border-radius: var(--radius-md);
+    font-size: 0.92rem;
+    font-weight: 600;
     display: flex;
     align-items: center;
-    gap: 8px;
-    font-weight: 500;
-    transition: background 0.2s;
+    gap: 0.5rem;
+    box-shadow: 0 4px 10px rgba(5, 150, 105, 0.25);
+    cursor: pointer;
+    transition: all var(--transition-fast);
 }
 
-.add-btn:hover {
-    background-color: #3182ce;
+.btn-add-user:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 14px rgba(5, 150, 105, 0.35);
+}
+
+/* Table Card */
+.users-table-card {
+    background-color: var(--surface-card);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    box-shadow: var(--shadow-xs);
 }
 
 .users-table {
     width: 100%;
     border-collapse: collapse;
+    font-size: 0.88rem;
 }
 
 .users-table th {
-    text-align: left;
-    padding: 15px;
-    border-bottom: 2px solid #e2e8f0;
-    color: #718096;
+    background-color: var(--gray-50);
+    color: var(--gray-600);
+    font-weight: 700;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    padding: 0.85rem 1rem;
+    border-bottom: 1px solid var(--border-color);
+    white-space: nowrap;
 }
 
 .users-table td {
-    padding: 15px;
-    border-bottom: 1px solid #e2e8f0;
-    color: #2d3748;
+    padding: 0.85rem 1rem;
+    border-bottom: 1px solid var(--border-color);
+    color: var(--gray-700);
+    vertical-align: middle;
 }
 
-.username-cell {
+.users-table tr:hover {
+    background-color: var(--surface-hover);
+}
+
+.user-name-cell {
     display: flex;
     align-items: center;
-    gap: 10px;
-    font-weight: 500;
+    gap: 0.75rem;
 }
 
-.user-icon {
-    color: #cbd5e0;
-}
-
-.role-badge {
-    padding: 4px 10px;
-    border-radius: 15px;
-    font-size: 0.8rem;
-    font-weight: 600;
-}
-
-.role-badge.admin {
-    background-color: #fed7d7;
-    color: #c53030;
-}
-
-.role-badge.user {
-    background-color: #c6f6d5;
-    color: #2f855a;
-}
-
-.delete-btn {
-    background: none;
-    border: none;
-    color: #faaca8;
-    cursor: pointer;
-    font-size: 1.1rem;
-    transition: color 0.2s;
-}
-
-.delete-btn:hover:not(:disabled) {
-    color: #e53e3e;
-}
-
-.delete-btn:disabled {
-    color: #edf2f7;
-    cursor: not-allowed;
-}
-
-/* Modal Styles */
-.modal-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(0, 0, 0, 0.5);
+.user-avatar-circle {
+    width: 36px;
+    height: 36px;
+    background: linear-gradient(135deg, #334155, #0f172a);
+    color: white;
+    font-weight: 700;
+    border-radius: var(--radius-full);
     display: flex;
     align-items: center;
     justify-content: center;
-    z-index: 1000;
+    font-size: 0.95rem;
+    flex-shrink: 0;
 }
 
-.modal-content {
-    background: white;
-    padding: 30px;
-    border-radius: 10px;
-    width: 400px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+.user-name-meta {
+    display: flex;
+    flex-direction: column;
 }
 
-.modal-content h3 {
-    margin-top: 0;
-    margin-bottom: 20px;
-    color: #2d3748;
+.user-name-meta strong {
+    color: var(--gray-900);
+    font-weight: 600;
 }
 
-.form-group {
-    margin-bottom: 15px;
+.user-id-sub {
+    font-size: 0.75rem;
+    color: var(--gray-400);
 }
 
-.form-group label {
-    display: block;
-    margin-bottom: 5px;
-    color: #4a5568;
-    font-size: 0.9rem;
+.user-email-cell {
+    color: var(--gray-600);
 }
 
-.form-group input,
-.form-group select {
+.user-role-chip {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: var(--radius-full);
+    font-size: 0.75rem;
+    font-weight: 600;
+}
+
+.user-role-chip.admin {
+    background-color: #eff6ff;
+    color: #1d4ed8;
+}
+
+.user-role-chip.cashier {
+    background-color: var(--success-bg);
+    color: var(--success-text);
+}
+
+.user-status-active {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    color: var(--success-text);
+    font-size: 0.78rem;
+    font-weight: 600;
+}
+
+.btn-delete-user {
+    background: none;
+    border: none;
+    color: var(--gray-400);
+    padding: 6px;
+    font-size: 0.95rem;
+    cursor: pointer;
+    border-radius: var(--radius-sm);
+    transition: all var(--transition-fast);
+}
+
+.btn-delete-user:hover {
+    background-color: var(--danger-bg);
+    color: var(--danger);
+}
+
+.empty-users-cell {
+    text-align: center;
+    padding: 3rem 1rem !important;
+    color: var(--gray-400);
+}
+
+.users-loading {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 3rem 1rem;
+    gap: 1rem;
+    color: var(--gray-500);
+}
+
+/* User Modal Box */
+.user-modal-box {
+    background-color: var(--surface-card);
     width: 100%;
-    padding: 10px;
-    border: 1px solid #e2e8f0;
-    border-radius: 5px;
+    max-width: 440px;
+    border-radius: var(--radius-xl);
+    padding: 1.75rem;
+    box-shadow: var(--shadow-xl);
+    border: 1px solid var(--border-color);
+}
+
+.user-modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1.25rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.user-modal-header h3 {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--gray-900);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.form-group-user {
+    margin-bottom: 1.15rem;
+}
+
+.form-group-user label {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--gray-700);
+    margin-bottom: 0.4rem;
+}
+
+.form-group-user input,
+.form-group-user select {
+    width: 100%;
+    padding: 0.7rem 0.85rem;
+    border: 1px solid var(--gray-200);
+    border-radius: var(--radius-md);
+    font-size: 0.9rem;
+    color: var(--gray-800);
+    background-color: var(--gray-50);
+}
+
+.form-group-user input:focus,
+.form-group-user select:focus {
     outline: none;
+    background-color: #ffffff;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px var(--primary-focus);
 }
 
-.form-group input:focus,
-.form-group select:focus {
-    border-color: #4299e1;
-}
-
-.modal-actions {
+.user-modal-actions {
     display: flex;
     justify-content: flex-end;
-    gap: 10px;
-    margin-top: 25px;
+    gap: 0.75rem;
+    margin-top: 1.5rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border-color);
 }
 
-.cancel-btn {
-    background: #edf2f7;
-    color: #4a5568;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 5px;
+.btn-user-cancel {
+    background-color: var(--gray-100);
+    border: 1px solid var(--gray-200);
+    color: var(--gray-700);
+    padding: 0.7rem 1.25rem;
+    border-radius: var(--radius-md);
+    font-size: 0.88rem;
+    font-weight: 600;
     cursor: pointer;
 }
 
-.save-btn {
-    background: #48bb78;
+.btn-user-save {
+    background: linear-gradient(135deg, var(--primary), var(--primary-hover));
     color: white;
     border: none;
-    padding: 10px 20px;
-    border-radius: 5px;
+    padding: 0.7rem 1.5rem;
+    border-radius: var(--radius-md);
+    font-size: 0.88rem;
+    font-weight: 700;
     cursor: pointer;
-}
-
-.save-btn:hover {
-    background: #38a169;
+    box-shadow: 0 2px 6px rgba(5, 150, 105, 0.25);
 }

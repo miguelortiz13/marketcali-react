@@ -1,23 +1,39 @@
+@import "../../css/variables.css";
+
 .layout-container {
     display: flex;
     min-height: 100vh;
-    background-color: #f7fafc;
+    background-color: var(--bg-app);
 }
 
 .layout-content {
     flex: 1;
-    margin-left: 250px;
-    transition: margin-left 0.3s ease;
+    margin-left: var(--sidebar-width);
+    transition: margin-left var(--transition-smooth);
     display: flex;
     flex-direction: column;
+    min-width: 0;
 }
 
 .layout-content.expanded {
-    margin-left: 80px;
+    margin-left: var(--sidebar-collapsed-width);
 }
 
 .page-content {
     flex: 1;
-    padding: 30px;
+    padding: 1.75rem 2rem;
     overflow-y: auto;
+    background-color: var(--bg-app);
+}
+
+@media (max-width: 768px) {
+    .layout-content {
+        margin-left: 0;
+    }
+    .layout-content.expanded {
+        margin-left: 0;
+    }
+    .page-content {
+        padding: 1rem;
+    }
 }
