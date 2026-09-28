@@ -1,0 +1,405 @@
+@import "../css/variables.css";
+
+/* Modal Overlay & Container */
+.label-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(15, 23, 42, 0.7);
+    backdrop-filter: blur(4px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2500;
+    padding: 1rem;
+}
+
+.label-modal-container {
+    background-color: var(--surface-card);
+    width: 100%;
+    max-width: 650px;
+    border-radius: var(--radius-xl);
+    box-shadow: var(--shadow-xl);
+    border: 1px solid var(--border-color);
+    display: flex;
+    flex-direction: column;
+    max-height: 90vh;
+    overflow: hidden;
+}
+
+.label-modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1.25rem 1.5rem;
+    border-bottom: 1px solid var(--border-color);
+    background-color: var(--gray-50);
+}
+
+.modal-title-wrap {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.modal-title-icon {
+    font-size: 1.5rem;
+    color: var(--primary);
+}
+
+.label-modal-header h3 {
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: var(--gray-900);
+    margin: 0;
+}
+
+.label-modal-header p {
+    font-size: 0.8rem;
+    color: var(--gray-500);
+    margin: 0;
+}
+
+.btn-close-label-modal {
+    background: none;
+    border: none;
+    color: var(--gray-400);
+    font-size: 1.1rem;
+    cursor: pointer;
+    padding: 4px;
+}
+
+.btn-close-label-modal:hover {
+    color: var(--gray-600);
+}
+
+/* Controls Bar */
+.label-controls-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem 1.5rem;
+    border-bottom: 1px solid var(--border-color);
+    background-color: #ffffff;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.control-group {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.control-group label {
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: var(--gray-700);
+}
+
+.toggle-label-type {
+    display: flex;
+    border: 1px solid var(--gray-200);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+}
+
+.btn-type-pill {
+    background-color: var(--gray-50);
+    border: none;
+    padding: 6px 12px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--gray-600);
+    cursor: pointer;
+    transition: all var(--transition-fast);
+}
+
+.btn-type-pill.active {
+    background-color: var(--primary);
+    color: white;
+}
+
+.copies-input {
+    width: 65px;
+    padding: 5px 8px;
+    border: 1px solid var(--gray-300);
+    border-radius: var(--radius-sm);
+    font-size: 0.9rem;
+    font-weight: 700;
+    text-align: center;
+}
+
+/* Preview Area */
+.label-preview-wrapper {
+    flex: 1;
+    padding: 1.5rem;
+    background-color: var(--gray-100);
+    overflow-y: auto;
+    display: flex;
+    justify-content: center;
+}
+
+.printable-labels-area {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    align-items: center;
+    width: 100%;
+}
+
+/* Diseños de Etiquetas */
+.market-label {
+    background-color: #ffffff;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    box-sizing: border-box;
+}
+
+/* 1. Cenefa de Góndola (Estantería) */
+.shelf-tag {
+    width: 100%;
+    max-width: 440px;
+    border: 2px solid #000000;
+    border-radius: 6px;
+    padding: 12px 16px;
+    background-color: #ffffff;
+    color: #000000;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.label-top-brand {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 2px solid #000000;
+    padding-bottom: 4px;
+    margin-bottom: 8px;
+}
+
+.store-tag {
+    font-size: 0.85rem;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.product-category-tag {
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    background-color: #000000;
+    color: #ffffff;
+    padding: 2px 6px;
+    border-radius: 2px;
+}
+
+.shelf-main-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 8px;
+}
+
+.product-text-details {
+    flex: 1;
+}
+
+.shelf-product-name {
+    font-size: 1.15rem;
+    font-weight: 900;
+    line-height: 1.2;
+    margin: 0 0 4px 0;
+    text-transform: uppercase;
+}
+
+.shelf-product-brand {
+    font-size: 0.75rem;
+    font-weight: bold;
+    color: #333333;
+    display: block;
+}
+
+.shelf-price-badge {
+    background-color: #000000;
+    color: #ffffff;
+    padding: 6px 12px;
+    border-radius: 6px;
+    display: flex;
+    align-items: flex-start;
+    gap: 2px;
+    flex-shrink: 0;
+}
+
+.price-currency-sign {
+    font-size: 1.1rem;
+    font-weight: 900;
+    margin-top: 2px;
+}
+
+.price-big-number {
+    font-size: 2rem;
+    font-weight: 900;
+    line-height: 1;
+    letter-spacing: -0.5px;
+    font-variant-numeric: tabular-nums;
+}
+
+.shelf-barcode-container {
+    display: flex;
+    justify-content: center;
+    padding: 4px 0;
+    background-color: #ffffff;
+}
+
+.barcode-svg-element {
+    max-width: 100%;
+    height: auto;
+    display: block;
+}
+
+.shelf-footer-meta {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.65rem;
+    font-weight: bold;
+    color: #555555;
+    border-top: 1px dashed #000000;
+    padding-top: 4px;
+    margin-top: 4px;
+}
+
+/* 2. Sticker Adhesivo Compacto */
+.compact-sticker {
+    width: 260px;
+    border: 1px dashed #333333;
+    padding: 8px 12px;
+    text-align: center;
+    border-radius: 4px;
+}
+
+.compact-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 4px;
+}
+
+.compact-store {
+    font-size: 0.7rem;
+    font-weight: 900;
+}
+
+.compact-price {
+    font-size: 0.95rem;
+    font-weight: 900;
+}
+
+.compact-title {
+    font-size: 0.8rem;
+    font-weight: 700;
+    line-height: 1.2;
+    margin-bottom: 4px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.compact-barcode {
+    display: flex;
+    justify-content: center;
+}
+
+/* Footer Modal */
+.label-modal-footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.75rem;
+    padding: 1rem 1.5rem;
+    border-top: 1px solid var(--border-color);
+    background-color: var(--surface-card);
+}
+
+.btn-cancel-label {
+    background-color: var(--gray-100);
+    border: 1px solid var(--gray-200);
+    color: var(--gray-700);
+    padding: 0.65rem 1.2rem;
+    border-radius: var(--radius-md);
+    font-size: 0.88rem;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.btn-print-action {
+    background: linear-gradient(135deg, var(--gray-900), #000000);
+    color: white;
+    border: none;
+    padding: 0.65rem 1.4rem;
+    border-radius: var(--radius-md);
+    font-size: 0.92rem;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    cursor: pointer;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    transition: all var(--transition-fast);
+}
+
+.btn-print-action:hover {
+    background: #111827;
+    transform: translateY(-1px);
+}
+
+/* Impresión Limpia con @media print */
+@media print {
+    body * {
+        visibility: hidden;
+    }
+    .no-print {
+        display: none !important;
+    }
+    .label-modal-overlay {
+        position: static;
+        background: none;
+        padding: 0;
+    }
+    .label-modal-container {
+        border: none;
+        box-shadow: none;
+        max-width: 100%;
+        overflow: visible;
+    }
+    .label-preview-wrapper {
+        background: none;
+        padding: 0;
+        overflow: visible;
+    }
+    .printable-labels-area,
+    .printable-labels-area * {
+        visibility: visible;
+    }
+    .printable-labels-area {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        gap: 8mm;
+    }
+    .shelf-tag {
+        page-break-inside: avoid;
+        box-shadow: none;
+        border: 2px solid #000000;
+    }
+    .compact-sticker {
+        page-break-inside: avoid;
+        box-shadow: none;
+        border: 1px solid #000000;
+    }
+}

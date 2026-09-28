@@ -1,124 +1,208 @@
-import { useEffect, useRef } from 'react';
-import { Html5Qrcode } from 'html5-qrcode';
+import { useEffect, useRef, useState } from 'react';
+import { Html5Qrcode, Html5QrcodeSupportedFormats } from 'html5-qrcode';
+import { FaCamera, FaTimes, FaKeyboard, FaCheck, FaSyncAlt } from 'react-icons/fa';
+import { playBarcodeBeep } from '../utils/audio';
+import '../css/BarcodeScanner.css';
 
 const BarcodeScanner = ({ onScan, onClose }) => {
   const html5QrCodeRef = useRef(null);
+  const [cameras, setCameras] = useState([]);
+  const [selectedCameraId, setSelectedCameraId] = useState('');
+  const [manualCode, setManualCode] = useState('');
+  const [showManualInput, setShowManualInput] = useState(false);
+  const [scannerStatus, setScannerStatus] = useState('Iniciando cámara...');
 
+  // Get available video inputs on mount
   useEffect(() => {
-    const startScanner = async () => {
-      // Create new instance 
-      const html5QrCode = new Html5Qrcode("reader");
-      html5QrCodeRef.current = html5QrCode;
+    Html5Qrcode.getCameras()
+      .then((devices) => {
+        if (devices && devices.length > 0) {
+          setCameras(devices);
+          // Prefer back camera if found in device label
+          const backCam = devices.find(d =>
+            d.label.toLowerCase().includes('back') ||
+            d.label.toLowerCase().includes('trasera') ||
+            d.label.toLowerCase().includes('environment')
+          );
+          setSelectedCameraId(backCam ? backCam.id : devices[0].id);
+        } else {
+          setScannerStatus('No se detectaron cámaras en este dispositivo');
+        }
+      })
+      .catch((err) => {
+        console.warn('Error al enumerar cámaras:', err);
+        setScannerStatus('Permiso de cámara no concedido');
+      });
+  }, []);
 
-      const config = {
-        fps: 10,
-        // Optional bounding box to focus scanning
-        qrbox: { width: 250, height: 150 },
-        aspectRatio: 1.0,
-      };
+  // Start scanner when camera is selected
+  useEffect(() => {
+    if (!selectedCameraId) return;
 
-      try {
-        await html5QrCode.start(
-          { facingMode: "environment" }, // Prefer back camera
-          config,
-          (decodedText, decodedResult) => {
-            if (decodedText) {
-              onScan(decodedText);
-              // Clean up nicely after scanning a valid code
-              html5QrCode.stop().then(() => {
-                  html5QrCode.clear();
-                  onClose();
-              }).catch(console.error);
-            }
-          },
-          (errorMessage) => {
-            // This triggers constantly while hunting for barcodes, safely ignore.
-          }
-        );
-      } catch (err) {
-        console.error("Error inicializando escáner html5-qrcode:", err);
+    const html5QrCode = new Html5Qrcode("interactive-scanner-viewport", {
+      formatsToSupport: [
+        Html5QrcodeSupportedFormats.EAN_13,
+        Html5QrcodeSupportedFormats.EAN_8,
+        Html5QrcodeSupportedFormats.CODE_128,
+        Html5QrcodeSupportedFormats.UPC_A,
+        Html5QrcodeSupportedFormats.UPC_E,
+        Html5QrcodeSupportedFormats.QR_CODE
+      ],
+      verbose: false
+    });
+    html5QrCodeRef.current = html5QrCode;
+
+    const config = {
+      fps: 15,
+      qrbox: { width: 300, height: 160 },
+      aspectRatio: 1.5,
+      videoConstraints: {
+        focusMode: "continuous"
       }
     };
 
-    startScanner();
+    setScannerStatus('Alinea el código de barras en el recuadro');
 
-    // Cleanup function when component unmounts
+    html5QrCode.start(
+      selectedCameraId,
+      config,
+      (decodedText) => {
+        if (decodedText) {
+          // Play supermarket confirmation beep
+          playBarcodeBeep('success');
+
+          // Clean stop
+          html5QrCode.stop()
+            .then(() => {
+              html5QrCode.clear();
+              onScan(decodedText);
+              if (onClose) onClose();
+            })
+            .catch(() => {
+              onScan(decodedText);
+              if (onClose) onClose();
+            });
+        }
+      },
+      () => {
+        // Continuous search frame, ignore safely
+      }
+    ).catch((err) => {
+      console.error("Error al iniciar cámara:", err);
+      setScannerStatus('Error al iniciar transmisión de video');
+    });
+
     return () => {
       if (html5QrCodeRef.current) {
         try {
-            if (html5QrCodeRef.current.isScanning) {
-                html5QrCodeRef.current.stop().then(() => {
-                    html5QrCodeRef.current.clear();
-                }).catch(err => console.error("Error pausando escáner:", err));
-            } else {
-                html5QrCodeRef.current.clear();
-            }
+          if (html5QrCodeRef.current.isScanning) {
+            html5QrCodeRef.current.stop().then(() => {
+              html5QrCodeRef.current.clear();
+            }).catch(console.error);
+          } else {
+            html5QrCodeRef.current.clear();
+          }
         } catch (e) {
-            console.error("Error clearing scanner instance", e);
+          console.error("Error limpiando cámara:", e);
         }
       }
     };
-  }, [onScan, onClose]);
+  }, [selectedCameraId]);
+
+  const handleManualSubmit = (e) => {
+    e.preventDefault();
+    if (manualCode.trim()) {
+      playBarcodeBeep('success');
+      onScan(manualCode.trim());
+      if (onClose) onClose();
+    }
+  };
 
   return (
-    <div className="scanner-viewport">
-      {/* Container required by html5-qrcode */}
-      <div id="reader"></div>
+    <div className="modern-scanner-card">
+      {/* Scanner Header */}
+      <div className="scanner-top-bar">
+        <div className="scanner-header-left">
+          <FaCamera className="camera-icon" />
+          <span className="scanner-title">Lector Óptico de Código de Barras</span>
+        </div>
 
-      {/* Visual scanning overlay */}
-      <div className="scanner-overlay">
-        <div className="scanner-laser"></div>
+        <div className="scanner-header-right">
+          {cameras.length > 1 && (
+            <select
+              className="camera-select-dropdown"
+              value={selectedCameraId}
+              onChange={(e) => setSelectedCameraId(e.target.value)}
+              title="Cambiar Cámara"
+            >
+              {cameras.map((c, i) => (
+                <option key={c.id} value={c.id}>
+                  {c.label || `Cámara ${i + 1}`}
+                </option>
+              ))}
+            </select>
+          )}
+
+          {onClose && (
+            <button className="btn-close-scanner" onClick={onClose} title="Cerrar Lector">
+              <FaTimes />
+            </button>
+          )}
+        </div>
       </div>
 
-      <style>{`
-        .scanner-viewport {
-            position: relative;
-            width: 100%;
-            height: 300px;
-            overflow: hidden;
-            background: #000;
-            border-radius: 8px;
-        }
-        #reader {
-            width: 100%;
-            height: 100%;
-        }
-        #reader video {
-            width: 100% !important;
-            height: 100% !important;
-            object-fit: cover !important;
-        }
-        .scanner-overlay {
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            border: 2px solid rgba(0,0,0,0.5);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            pointer-events: none;
-            z-index: 10;
-        }
-        .scanner-laser {
-            width: 80%;
-            height: 2px;
-            background: red;
-            box-shadow: 0 0 4px red;
-            animation: scan 2s infinite;
-        }
-        /* Hide unnecessary HTML5QrCode UI elements that inject automatically */
-        #reader__dashboard_section_csr,
-        #reader__dashboard_section_swaplink {
-            display: none !important;
-        }
-        @keyframes scan {
-            0% { transform: translateY(-50px); opacity: 0.5; }
-            50% { transform: translateY(50px); opacity: 1; }
-            100% { transform: translateY(-50px); opacity: 0.5; }
-        }
-      `}</style>
+      {/* Video Viewport with Targeting Overlay */}
+      <div className="scanner-camera-window">
+        <div id="interactive-scanner-viewport"></div>
+
+        {/* Viewfinder Overlay with Corner Brackets */}
+        <div className="viewfinder-overlay">
+          <div className="viewfinder-target-box">
+            <span className="corner top-left"></span>
+            <span className="corner top-right"></span>
+            <span className="corner bottom-left"></span>
+            <span className="corner bottom-right"></span>
+            <div className="laser-scan-line"></div>
+          </div>
+        </div>
+
+        <div className="scanner-status-pill">
+          <span>{scannerStatus}</span>
+        </div>
+      </div>
+
+      {/* Footer & Fallback manual input */}
+      <div className="scanner-bottom-bar">
+        <div className="supported-formats-pills">
+          <span className="format-badge">EAN-13</span>
+          <span className="format-badge">CODE-128</span>
+          <span className="format-badge">UPC-A</span>
+        </div>
+
+        <button
+          type="button"
+          className="btn-toggle-manual"
+          onClick={() => setShowManualInput(!showManualInput)}
+        >
+          <FaKeyboard />
+          <span>{showManualInput ? 'Ocultar teclado' : 'Ingresar código manual'}</span>
+        </button>
+      </div>
+
+      {showManualInput && (
+        <form onSubmit={handleManualSubmit} className="scanner-manual-input-form">
+          <input
+            type="text"
+            placeholder="Escribe el código de barras numérico..."
+            value={manualCode}
+            onChange={(e) => setManualCode(e.target.value)}
+            autoFocus
+          />
+          <button type="submit" className="btn-confirm-manual" disabled={!manualCode.trim()}>
+            <FaCheck /> Confirmar
+          </button>
+        </form>
+      )}
     </div>
   );
 };

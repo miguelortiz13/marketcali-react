@@ -1,32 +1,45 @@
-import { useEffect, useState } from "react";
-import { FaBarcode, FaBox, FaWeight, FaMoneyBillWave, FaInfoCircle, FaStore, FaTag, FaArrowLeft } from "react-icons/fa";
+import { useEffect, useState, useRef } from "react";
+import {
+  FaBarcode,
+  FaBox,
+  FaWeight,
+  FaMoneyBillWave,
+  FaInfoCircle,
+  FaStore,
+  FaTag,
+  FaArrowLeft,
+  FaPrint
+} from "react-icons/fa";
 import { useParams, useNavigate } from "react-router-dom";
+import JsBarcode from "jsbarcode";
+import BarcodeLabelModal from "../../components/BarcodeLabelModal";
+import api from "../../api/client";
+import "../../css/ProductoVisualizador.css";
+
+const formatCOP = (value) => {
+  return new Intl.NumberFormat('es-CO', {
+    style: 'currency',
+    currency: 'COP',
+    maximumFractionDigits: 0
+  }).format(Number(value) || 0);
+};
 
 function ProductoVisualizador() {
   const [producto, setProducto] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [showLabelModal, setShowLabelModal] = useState(false);
+  const barcodeRef = useRef(null);
   const { id } = useParams();
   const navigate = useNavigate();
 
   useEffect(() => {
     const fetchProducto = async () => {
       try {
-        const response = await fetch(`/api/productos/${id}`, {
-          mode: "cors",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        });
-
-        if (!response.ok) {
-          throw new Error(`Producto no encontrado (ID: ${id})`);
-        }
-
-        const data = await response.json();
-        setProducto(data);
+        const response = await api.get(`/api/productos/${id}`);
+        setProducto(response.data);
       } catch (err) {
-        setError(err.message);
+        setError(err.response?.data?.message || err.message || `Producto no encontrado (ID: ${id})`);
       } finally {
         setLoading(false);
       }
@@ -35,11 +48,32 @@ function ProductoVisualizador() {
     fetchProducto();
   }, [id]);
 
+  useEffect(() => {
+    if (producto && barcodeRef.current) {
+      try {
+        const code = producto.codigoBarras || producto.id?.toString() || "00000000";
+        JsBarcode(barcodeRef.current, code, {
+          format: "CODE128",
+          lineColor: "#000000",
+          width: 2,
+          height: 60,
+          displayValue: true,
+          fontSize: 14,
+          fontOptions: "bold",
+          margin: 6,
+          background: "#ffffff"
+        });
+      } catch (e) {
+        console.error("Error al renderizar código en visualizador:", e);
+      }
+    }
+  }, [producto]);
+
   if (loading) {
     return (
       <div className="visualizador-loading">
         <div className="spinner"></div>
-        <p>Leyendo código de barras...</p>
+        <p>Cargando información del producto...</p>
       </div>
     );
   }
@@ -47,10 +81,10 @@ function ProductoVisualizador() {
   if (error) {
     return (
       <div className="visualizador-error">
-        <h2>Error</h2>
+        <h2>Error al consultar producto</h2>
         <p>{error}</p>
         <button onClick={() => navigate(-1)} className="back-button">
-          <FaArrowLeft /> Volver
+          <FaArrowLeft /> Volver al catálogo
         </button>
       </div>
     );
@@ -62,12 +96,15 @@ function ProductoVisualizador() {
         <button onClick={() => navigate(-1)} className="back-button">
           <FaArrowLeft /> Volver
         </button>
-        <h1>Información del Producto</h1>
+        <h1>Ficha de Producto</h1>
+        <button onClick={() => setShowLabelModal(true)} className="btn-print-tag-top">
+          <FaPrint /> Imprimir Etiqueta
+        </button>
       </div>
 
       <div className="producto-card">
         <div className="producto-id">
-          <FaBarcode /> Código: {producto.id}
+          <FaBarcode /> Código de Barras Oficial: {producto.codigoBarras || producto.id}
         </div>
 
         <div className="producto-imagen-container">
@@ -83,7 +120,7 @@ function ProductoVisualizador() {
           ) : (
             <div className="producto-imagen-placeholder">
               <FaBox />
-              <span>Imagen no disponible</span>
+              <span>Sin fotografía cargada</span>
             </div>
           )}
         </div>
@@ -107,7 +144,7 @@ function ProductoVisualizador() {
             <div className="detalle-item">
               <FaMoneyBillWave className="detalle-icon" />
               <span className="detalle-label">Precio:</span>
-              <span className="detalle-valor precio">${producto.precio.toFixed(2)}</span>
+              <span className="detalle-valor precio">{formatCOP(producto.precio)}</span>
             </div>
 
             <div className="detalle-item">
@@ -126,16 +163,31 @@ function ProductoVisualizador() {
             </div>
           )}
 
+          {/* Renderizado real de código de barras */}
+          <div className="rendered-barcode-box">
+            <span className="rendered-barcode-label">Código de Barras Escaneable (CODE-128):</span>
+            <div className="svg-barcode-center">
+              <svg ref={barcodeRef}></svg>
+            </div>
+          </div>
+
           <div className="producto-footer">
             <div className="codigo-barras">
-              <FaBarcode /> Código: {producto.id}
+              <FaBarcode /> Código: {producto.codigoBarras || producto.id}
             </div>
             <div className="fecha-consulta">
-              Consultado: {new Date().toLocaleString()}
+              Consultado: {new Date().toLocaleString('es-CO')}
             </div>
           </div>
         </div>
       </div>
+
+      {/* Modal para imprimir etiquetas */}
+      <BarcodeLabelModal
+        product={producto}
+        isOpen={showLabelModal}
+        onClose={() => setShowLabelModal(false)}
+      />
     </div>
   );
 }
