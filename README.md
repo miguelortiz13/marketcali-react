@@ -8,11 +8,11 @@
 [![Docker](https://img.shields.io/badge/Docker-Containerized-2496ED?style=for-the-badge&logo=docker&logoColor=white)](https://www.docker.com/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=for-the-badge)](LICENSE)
 
-**NexPOS Frontend** es la aplicación web interactiva de **Punto de Venta (POS) y Gestión Comercial Multirrubro** (supermercados, droguerías, ferreterías, tiendas de conveniencia y comercio minorista). Construida sobre **React 18** y empaquetada con **Vite**, ofrece una experiencia fluida, rápida y ergonómica tanto para cajeros en terminales de alta velocidad como para gerentes de inventario y administradores comerciales. *(Nombre de código del repositorio: marketcali-react)*.
+**NexPOS Frontend** es la aplicación web interactiva de **Punto de Venta (POS) y Gestión Comercial Multirrubro** (supermercados, droguerías, ferreterías, tiendas de conveniencia y comercio minorista). Construida sobre **React 18** y empaquetada con **Vite**, ofrece una experiencia fluida, rápida y ergonómica tanto para cajeros en terminales de alta velocidad como para gerentes de inventario y administradores comerciales.
 
 > 📚 **Documentación Estratégica Completa:**
-> - [📘 Guía Maestra del Ciclo de Vida de Desarrollo de Software (SDLC)](https://github.com/miguelortiz13/marketcali-backend/blob/master/docs/SDLC_GUIDE.md)
-> - [🚀 Visión Comercial, Hoja de Ruta & Cumplimiento DIAN](https://github.com/miguelortiz13/marketcali-backend/blob/master/docs/COMMERCIAL_ROADMAP.md)
+> - [📘 Guía Maestra del Ciclo de Vida de Desarrollo de Software (SDLC)](https://github.com/miguelortiz13/nexpos-backend/blob/master/docs/SDLC_GUIDE.md)
+> - [🚀 Visión Comercial, Hoja de Ruta & Cumplimiento DIAN](https://github.com/miguelortiz13/nexpos-backend/blob/master/docs/COMMERCIAL_ROADMAP.md)
 
 ---
 
@@ -113,7 +113,7 @@ graph TD
 El código fuente sigue las mejores prácticas de **co-localización** (cada componente vive junto a su hoja de estilos y dependencias inmediatas), eliminando hojas de estilo globales desordenadas y facilitando el mantenimiento:
 
 ```
-marketcali-react/
+nexpos-frontend/
 ├── index.html                      # Documento raíz HTML
 ├── vite.config.js                  # Configuración de empaquetado y proxy reverso en dev
 ├── nginx.conf                      # Servidor Nginx de producción (SPA fallback y proxy pass)
@@ -270,8 +270,8 @@ La vista de reportes (`/reports`) incorpora un tablero visual de inteligencia de
 
 ```bash
 # 1. Clonar el repositorio
-git clone https://github.com/miguelortiz13/marketcali-react.git
-cd marketcali-react
+git clone https://github.com/miguelortiz13/nexpos-frontend.git
+cd nexpos-frontend
 
 # 2. Instalar dependencias
 npm install
@@ -304,10 +304,10 @@ El proyecto incluye un [`Dockerfile`](Dockerfile) multietapa que optimiza el pes
 
 ```bash
 # Construir la imagen Docker
-docker build -t marketcali-frontend .
+docker build -t nexpos-frontend .
 
 # Ejecutar el contenedor
-docker run -d -p 80:80 --name marketcali-frontend-app marketcali-frontend
+docker run -d -p 80:80 --name nexpos-frontend-app nexpos-frontend
 ```
 
 Accede a la aplicación en **[http://localhost](http://localhost)**.
