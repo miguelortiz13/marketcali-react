@@ -12,9 +12,9 @@ import {
 } from "react-icons/fa";
 import { useParams, useNavigate } from "react-router-dom";
 import JsBarcode from "jsbarcode";
-import BarcodeLabelModal from "../../components/BarcodeLabelModal";
+import BarcodeLabelModal from "../../components/common/BarcodeLabelModal";
 import api from "../../api/client";
-import "../../css/ProductoVisualizador.css";
+import "./ProductoVisualizador.css";
 
 const formatCOP = (value) => {
   return new Intl.NumberFormat('es-CO', {

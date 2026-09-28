@@ -10,8 +10,8 @@ import {
   FaShieldAlt,
   FaBarcode
 } from "react-icons/fa";
-import { useAuth } from "../context/AuthContext";
-import "../css/HomePage.css";
+import { useAuth } from "../../context/AuthContext";
+import "./HomePage.css";
 
 function HomePage() {
   const { user, isAuthenticated, isAdmin } = useAuth();

@@ -1,8 +1,7 @@
 import { Routes, Route } from "react-router-dom";
 import Layout from "./components/layout/Layout";
 import ProtectedRoute from "./components/auth/ProtectedRoute";
-import HomePage from "./pages/HomePage";
-import About from "./pages/others/About";
+import HomePage from "./pages/home/HomePage";
 import Producto from "./pages/productos/Producto";
 import ProductoVisualizador from "./pages/productos/ProductoVisualizador";
 import ProductoCRUD from "./pages/productos/ProductoCRUD";
@@ -26,7 +25,6 @@ function App() {
               <Routes>
                 {/* Rutas públicas */}
                 <Route path="/" element={<HomePage />} />
-                <Route path="/sobrenosotros" element={<About />} />
                 <Route path="/productos" element={<Producto />} />
                 <Route path="/producto/:id" element={<ProductoVisualizador />} />
 

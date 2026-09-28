@@ -1,8 +1,8 @@
 import { useEffect, useRef, useState } from 'react';
 import { Html5Qrcode, Html5QrcodeSupportedFormats } from 'html5-qrcode';
 import { FaCamera, FaTimes, FaKeyboard, FaCheck, FaSyncAlt } from 'react-icons/fa';
-import { playBarcodeBeep } from '../utils/audio';
-import '../css/BarcodeScanner.css';
+import { playBarcodeBeep } from '../../utils/audio';
+import './BarcodeScanner.css';
 
 const BarcodeScanner = ({ onScan, onClose }) => {
   const html5QrCodeRef = useRef(null);

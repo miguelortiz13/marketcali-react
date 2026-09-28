@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { FaStore, FaUser, FaLock, FaCashRegister, FaShieldAlt, FaArrowRight } from 'react-icons/fa';
 import { useAuth } from '../../context/AuthContext';
 import api from '../../api/client';
-import '../../css/Login.css';
+import './Login.css';
 
 const Login = () => {
     const [username, setUsername] = useState('');

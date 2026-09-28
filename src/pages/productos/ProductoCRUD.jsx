@@ -19,10 +19,10 @@ import {
 import Modal from 'react-modal';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import BarcodeScanner from "../../components/BarcodeScanner";
-import BarcodeLabelModal from "../../components/BarcodeLabelModal";
+import BarcodeScanner from "../../components/common/BarcodeScanner";
+import BarcodeLabelModal from "../../components/common/BarcodeLabelModal";
 import api from "../../api/client";
-import "../../css/ProductoCRUD.css";
+import "./ProductoCRUD.css";
 
 Modal.setAppElement('#root');
 

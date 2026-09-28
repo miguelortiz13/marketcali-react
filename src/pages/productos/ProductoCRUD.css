@@ -1,4 +1,4 @@
-@import "./variables.css";
+@import "../../styles/variables.css";
 
 .crud-dashboard-container {
   max-width: 1300px;

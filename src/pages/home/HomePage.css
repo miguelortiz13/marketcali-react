@@ -1,4 +1,4 @@
-@import "./variables.css";
+@import "../../styles/variables.css";
 
 .home-dashboard {
   max-width: 1200px;

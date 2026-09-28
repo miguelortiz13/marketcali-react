@@ -19,7 +19,7 @@ import {
     FaList
 } from 'react-icons/fa';
 import { toast, ToastContainer } from 'react-toastify';
-import BarcodeScanner from '../../components/BarcodeScanner';
+import BarcodeScanner from '../../components/common/BarcodeScanner';
 import useHardwareScanner from '../../hooks/useHardwareScanner';
 import { playBarcodeBeep } from '../../utils/audio';
 import 'react-toastify/dist/ReactToastify.css';
