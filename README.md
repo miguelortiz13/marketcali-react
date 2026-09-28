@@ -3,11 +3,16 @@
 [![React 18](https://img.shields.io/badge/React-18.3.1-61DAFB?style=for-the-badge&logo=react&logoColor=black)](https://react.dev/)
 [![Vite](https://img.shields.io/badge/Vite-5.2-646CFF?style=for-the-badge&logo=vite&logoColor=white)](https://vitejs.dev/)
 [![React Router](https://img.shields.io/badge/React_Router-v6-CA4245?style=for-the-badge&logo=react-router&logoColor=white)](https://reactrouter.com/)
+[![Recharts](https://img.shields.io/badge/Recharts-Analytics%20Active-22c55e?style=for-the-badge)](https://recharts.org/)
 [![Nginx](https://img.shields.io/badge/Nginx-Production_Ready-009639?style=for-the-badge&logo=nginx&logoColor=white)](https://nginx.org/)
 [![Docker](https://img.shields.io/badge/Docker-Containerized-2496ED?style=for-the-badge&logo=docker&logoColor=white)](https://www.docker.com/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=for-the-badge)](LICENSE)
 
 **MarketCali Frontend** es la aplicación web interactiva de **Punto de Venta (POS) y Administración de Supermercados**. Construida sobre **React 18** y empaquetada con **Vite**, ofrece una experiencia fluida, rápida y ergonómica tanto para cajeros en terminales de alta velocidad como para gerentes de inventario y administradores comerciales.
+
+> 📚 **Documentación Estratégica Completa:**
+> - [📘 Guía Maestra del Ciclo de Vida de Desarrollo de Software (SDLC)](https://github.com/miguelortiz13/marketcali-backend/blob/master/docs/SDLC_GUIDE.md)
+> - [🚀 Visión Comercial, Hoja de Ruta & Cumplimiento DIAN](https://github.com/miguelortiz13/marketcali-backend/blob/master/docs/COMMERCIAL_ROADMAP.md)
 
 ---
 
@@ -22,6 +27,7 @@
   - [3. Generación e Impresión Térmica de Etiquetas](#3-generación-e-impresión-térmica-de-etiquetas)
   - [4. Control de Acceso Basado en Roles (RBAC)](#4-control-de-acceso-basado-en-roles-rbac)
   - [5. Sistema de Diseño & Ergonomía Visual](#5-sistema-de-diseño--ergonomía-visual)
+  - [6. Panel de Analítica Interactiva & Exportación (Recharts)](#6-panel-de-analítica-interactiva--exportación-recharts)
 - [Guía de Instalación y Ejecución](#-guía-de-instalación-y-ejecución)
   - [Desarrollo Local](#desarrollo-local)
   - [Compilación para Producción](#compilación-para-producción)
@@ -236,6 +242,18 @@ La pantalla de ventas (`/sales`) permite alternar instantáneamente la disposici
 *   **Paleta de Color Profesional**: Base en tonos esmeralda (`#059669`, `#10b981`), neutros pizarra (`#0f172a`, `#1e293b`) y fondos suaves (`#f8fafc`).
 *   **Tokens CSS Centralizados**: Definidos en [`variables.css`](src/styles/variables.css) con variables semánticas (`--color-primary`, `--color-surface`, `--shadow-md`, `--radius-lg`).
 *   **Diseño Totalmente Responsive**: Sidebar colapsable en pantallas móviles o tablets de punto de venta.
+
+---
+
+### 6. Panel de Analítica Interactiva & Exportación (Recharts)
+
+La vista de reportes (`/reports`) incorpora un tablero visual de inteligencia de negocio minorista:
+
+*   **Gráfico de Tendencia de Ingresos (AreaChart)**: Curva cronológica con gradiente de recaudación total en pesos colombianos ($ COP) y conteo de tickets.
+*   **Distribución por Medios de Pago (Donut PieChart)**: Participación porcentual de cobros en Efectivo, Tarjeta y Transferencias bancarias.
+*   **Top 5 Productos Más Vendidos (BarChart)**: Barras comparativas de rotación por volumen de unidades y recaudación.
+*   **Selectores de Rango Rápido**: Filtros instantáneos en 1 clic (*Hoy*, *Últimos 7 días*, *Últimos 30 días*, *Historial Completo*).
+*   **Exportación a Excel / CSV**: Botón para descargar el registro completo de facturas con codificación UTF-8 BOM compatible con Microsoft Excel y hojas de cálculo contables.
 
 ---
 

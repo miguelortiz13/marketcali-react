@@ -12,6 +12,15 @@ export default defineConfig({
       "/auth": {
         target: "http://localhost:8088",
       },
+      "/swagger-ui": {
+        target: "http://localhost:8088",
+      },
+      "/v3/api-docs": {
+        target: "http://localhost:8088",
+      },
+      "/actuator": {
+        target: "http://localhost:8088",
+      },
     },
   },
   optimizeDeps: {
@@ -23,5 +32,4 @@ export default defineConfig({
       'quagga': '@ericblade/quagga2',
     },
   },
-
 });
