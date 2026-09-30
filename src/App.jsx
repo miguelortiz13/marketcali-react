@@ -8,6 +8,7 @@ import ProductoCRUD from "./pages/productos/ProductoCRUD";
 import SalesPage from "./pages/sales/SalesPage";
 import ReportsPage from "./pages/reports/ReportsPage";
 import UsersPage from "./pages/users/UsersPage";
+import CashShiftPage from "./pages/cash/CashShiftPage";
 import Login from "./pages/auth/Login";
 
 function App() {
@@ -34,6 +35,14 @@ function App() {
                   element={
                     <ProtectedRoute>
                       <SalesPage />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="/caja"
+                  element={
+                    <ProtectedRoute>
+                      <CashShiftPage />
                     </ProtectedRoute>
                   }
                 />

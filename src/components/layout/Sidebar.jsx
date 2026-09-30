@@ -10,7 +10,8 @@ import {
     FaSignOutAlt,
     FaSignInAlt,
     FaStore,
-    FaCashRegister
+    FaCashRegister,
+    FaMoneyBillWave
 } from 'react-icons/fa';
 import { useAuth } from '../../context/AuthContext';
 import './Sidebar.css';
@@ -82,6 +83,12 @@ const Sidebar = ({ collapsed, setCollapsed }) => {
                                             <span className="pos-badge">VENTAS</span>
                                         </div>
                                     )}
+                                </NavLink>
+                            </li>
+                            <li>
+                                <NavLink to="/caja" className={({ isActive }) => (isActive ? 'active' : '')}>
+                                    <FaMoneyBillWave className="nav-icon" />
+                                    {!collapsed && <span className="nav-text">Control de Caja</span>}
                                 </NavLink>
                             </li>
                         </ul>

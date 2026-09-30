@@ -1,4 +1,5 @@
 import { useState, useEffect, useMemo } from 'react';
+import { useNavigate } from 'react-router-dom';
 import {
     FaSearch,
     FaShoppingCart,
@@ -24,6 +25,7 @@ import useHardwareScanner from '../../hooks/useHardwareScanner';
 import { playBarcodeBeep } from '../../utils/audio';
 import 'react-toastify/dist/ReactToastify.css';
 import api from '../../api/client';
+import cashShiftService from '../../api/cashShiftService';
 import './SalesPage.css';
 
 const formatCOP = (value) => {
@@ -35,7 +37,9 @@ const formatCOP = (value) => {
 };
 
 const SalesPage = () => {
+    const navigate = useNavigate();
     const [products, setProducts] = useState([]);
+    const [activeShift, setActiveShift] = useState(null);
     const [searchTerm, setSearchTerm] = useState('');
     const [selectedCategory, setSelectedCategory] = useState('TODAS');
     const [cart, setCart] = useState([]);
@@ -55,7 +59,17 @@ const SalesPage = () => {
 
     useEffect(() => {
         fetchProducts();
+        fetchActiveShift();
     }, []);
+
+    const fetchActiveShift = async () => {
+        try {
+            const shift = await cashShiftService.getActiveShift();
+            setActiveShift(shift || null);
+        } catch (error) {
+            console.error('Error al consultar turno activo:', error);
+        }
+    };
 
     useEffect(() => {
         localStorage.setItem('pos_view_mode', viewMode);
@@ -226,6 +240,7 @@ const SalesPage = () => {
             setCart([]);
 
             await fetchProducts();
+            await fetchActiveShift();
         } catch (error) {
             console.error('Error al procesar la venta:', error);
             const msg = error.response?.data?.message || error.message || 'Error al procesar la venta';
@@ -241,7 +256,7 @@ const SalesPage = () => {
             const url = window.URL.createObjectURL(new Blob([response.data], { type: 'application/pdf' }));
             const link = document.createElement('a');
             link.href = url;
-            link.setAttribute('download', `factura_marketcali_${saleId}.pdf`);
+            link.setAttribute('download', `factura_nexpos_${saleId}.pdf`);
             document.body.appendChild(link);
             link.click();
             link.remove();
@@ -271,6 +286,30 @@ const SalesPage = () => {
 
             {/* Left Main Section: Catalog & Search */}
             <div className="pos-main-panel">
+                {/* Indicador de Turno de Caja */}
+                {activeShift ? (
+                    <div className="pos-shift-indicator-bar open">
+                        <div className="shift-indicator-info">
+                            <span className="shift-status-dot"></span>
+                            <span>
+                                <strong>Turno #{activeShift.id} Activo</strong> ({activeShift.cashierUsername}) • Base: {formatCOP(activeShift.initialAmount)} • Ventas Turno: {formatCOP(activeShift.totalSalesAmount)}
+                            </span>
+                        </div>
+                        <button className="btn-shift-link" onClick={() => navigate('/caja')}>
+                            <FaMoneyBillWave /> Control de Caja & Arqueo
+                        </button>
+                    </div>
+                ) : (
+                    <div className="pos-shift-indicator-bar warning">
+                        <div className="shift-indicator-info">
+                            <span>⚠️ <strong>Caja Cerrada:</strong> No hay un turno activo. Abre tu turno para controlar el flujo de efectivo y arqueo.</span>
+                        </div>
+                        <button className="btn-shift-open-fast" onClick={() => navigate('/caja')}>
+                            <FaPlus /> Iniciar Turno
+                        </button>
+                    </div>
+                )}
+
                 {/* Search Bar & Scanner Trigger */}
                 <div className="pos-search-header">
                     <div className="pos-search-wrapper">

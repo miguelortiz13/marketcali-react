@@ -21,6 +21,84 @@
     padding: 1.25rem;
 }
 
+/* Barra de Indicador de Turno de Caja en POS */
+.pos-shift-indicator-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.65rem 1rem;
+    border-radius: var(--radius-md);
+    margin-bottom: 0.85rem;
+    font-size: 0.85rem;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.pos-shift-indicator-bar.open {
+    background: rgba(16, 185, 129, 0.1);
+    border: 1px solid rgba(16, 185, 129, 0.25);
+    color: var(--text-primary);
+}
+
+.pos-shift-indicator-bar.warning {
+    background: rgba(245, 158, 11, 0.12);
+    border: 1px solid rgba(245, 158, 11, 0.3);
+    color: var(--text-primary);
+}
+
+.shift-indicator-info {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+}
+
+.shift-status-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #059669;
+    box-shadow: 0 0 6px #059669;
+}
+
+.btn-shift-link {
+    background: none;
+    border: 1px solid rgba(16, 185, 129, 0.35);
+    color: #059669;
+    padding: 0.35rem 0.75rem;
+    border-radius: var(--radius-sm);
+    font-size: 0.8rem;
+    font-weight: 600;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    transition: all 0.2s;
+}
+
+.btn-shift-link:hover {
+    background: #059669;
+    color: #ffffff;
+}
+
+.btn-shift-open-fast {
+    background: #f59e0b;
+    border: none;
+    color: #ffffff;
+    padding: 0.4rem 0.85rem;
+    border-radius: var(--radius-sm);
+    font-size: 0.8rem;
+    font-weight: 700;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    box-shadow: 0 2px 6px rgba(245, 158, 11, 0.3);
+}
+
+.btn-shift-open-fast:hover {
+    background: #d97706;
+}
+
 /* Barra de Búsqueda y Botón de Escáner */
 .pos-search-header {
     display: flex;
