@@ -17,11 +17,13 @@ import {
     FaRedo,
     FaReceipt,
     FaTh,
-    FaList
+    FaList,
+    FaPrint
 } from 'react-icons/fa';
 import { toast, ToastContainer } from 'react-toastify';
 import BarcodeScanner from '../../components/common/BarcodeScanner';
 import useHardwareScanner from '../../hooks/useHardwareScanner';
+import ThermalReceiptModal from '../../components/common/ThermalReceiptModal';
 import { playBarcodeBeep } from '../../utils/audio';
 import 'react-toastify/dist/ReactToastify.css';
 import api from '../../api/client';
@@ -56,6 +58,7 @@ const SalesPage = () => {
 
     // Modal de Factura / Éxito
     const [completedSale, setCompletedSale] = useState(null);
+    const [showThermalReceipt, setShowThermalReceipt] = useState(false);
 
     useEffect(() => {
         fetchProducts();
@@ -799,15 +802,26 @@ const SalesPage = () => {
 
                         <div className="success-modal-buttons">
                             <button
+                                className="btn-print-thermal-action"
+                                onClick={() => setShowThermalReceipt(true)}
+                                title="Imprimir tiquete de caja para impresora térmica (58mm/80mm)"
+                            >
+                                <FaPrint />
+                                <span>Tiquete POS</span>
+                            </button>
+                            <button
                                 className="btn-download-pdf"
                                 onClick={() => downloadInvoice(completedSale.id)}
                             >
                                 <FaFilePdf />
-                                <span>Descargar Factura PDF</span>
+                                <span>Factura PDF</span>
                             </button>
                             <button
                                 className="btn-next-sale"
-                                onClick={() => setCompletedSale(null)}
+                                onClick={() => {
+                                    setCompletedSale(null);
+                                    setShowThermalReceipt(false);
+                                }}
                             >
                                 <FaRedo />
                                 <span>Nueva Venta</span>
@@ -816,6 +830,13 @@ const SalesPage = () => {
                     </div>
                 </div>
             )}
+
+            {/* Modal de Tiquete Térmico POS (58mm / 80mm) */}
+            <ThermalReceiptModal
+                sale={completedSale}
+                isOpen={showThermalReceipt}
+                onClose={() => setShowThermalReceipt(false)}
+            />
         </div>
     );
 };

@@ -12,8 +12,10 @@ import {
     FaMobileAlt,
     FaFileCsv,
     FaChartPie,
-    FaChartBar
+    FaChartBar,
+    FaPrint
 } from 'react-icons/fa';
+import ThermalReceiptModal from '../../components/common/ThermalReceiptModal';
 import {
     ResponsiveContainer,
     AreaChart,
@@ -52,6 +54,7 @@ const ReportsPage = () => {
     const [dateFilter, setDateFilter] = useState('');
     const [timeRange, setTimeRange] = useState('ALL'); // 'TODAY', 'WEEK', 'MONTH', 'ALL'
     const [loading, setLoading] = useState(false);
+    const [selectedSaleForTicket, setSelectedSaleForTicket] = useState(null);
 
     useEffect(() => {
         fetchSales();
@@ -520,13 +523,22 @@ const ReportsPage = () => {
                                             {formatCOP(sale.totalAmount)}
                                         </td>
                                         <td className="text-center">
-                                            <button
-                                                className="btn-download-invoice"
-                                                onClick={() => downloadInvoice(sale.id)}
-                                                title="Descargar Factura Oficial PDF"
-                                            >
-                                                <FaFilePdf /> Factura
-                                            </button>
+                                            <div className="reports-actions-flex">
+                                                <button
+                                                    className="btn-print-thermal-table"
+                                                    onClick={() => setSelectedSaleForTicket(sale)}
+                                                    title="Imprimir Tiquete Térmico POS (58mm/80mm)"
+                                                >
+                                                    <FaPrint /> Tiquete
+                                                </button>
+                                                <button
+                                                    className="btn-download-invoice"
+                                                    onClick={() => downloadInvoice(sale.id)}
+                                                    title="Descargar Factura Oficial PDF"
+                                                >
+                                                    <FaFilePdf /> Factura
+                                                </button>
+                                            </div>
                                         </td>
                                     </tr>
                                 ))}
@@ -543,6 +555,13 @@ const ReportsPage = () => {
                     )}
                 </div>
             </div>
+
+            {/* Modal de Tiquete Térmico POS (58mm / 80mm) */}
+            <ThermalReceiptModal
+                sale={selectedSaleForTicket}
+                isOpen={!!selectedSaleForTicket}
+                onClose={() => setSelectedSaleForTicket(null)}
+            />
         </div>
     );
 };
