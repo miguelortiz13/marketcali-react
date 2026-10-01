@@ -1,5 +1,6 @@
 # ⚡ NexPOS - Modern Retail & Point of Sale Frontend
 
+[![CI Pipeline](https://github.com/miguelortiz13/nexpos-frontend/actions/workflows/ci.yml/badge.svg)](https://github.com/miguelortiz13/nexpos-frontend/actions/workflows/ci.yml)
 [![React 18](https://img.shields.io/badge/React-18.3.1-61DAFB?style=for-the-badge&logo=react&logoColor=black)](https://react.dev/)
 [![Vite](https://img.shields.io/badge/Vite-5.2-646CFF?style=for-the-badge&logo=vite&logoColor=white)](https://vitejs.dev/)
 [![React Router](https://img.shields.io/badge/React_Router-v6-CA4245?style=for-the-badge&logo=react-router&logoColor=white)](https://reactrouter.com/)
