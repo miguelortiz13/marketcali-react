@@ -50,7 +50,7 @@ const ThermalReceiptModal = ({ sale, isOpen, onClose, autoPrint = false }) => {
         try {
             const saved = localStorage.getItem('nexpos_thermal_config');
             return saved ? { ...DEFAULT_CONFIG, ...JSON.parse(saved) } : DEFAULT_CONFIG;
-        } catch (e) {
+        } catch {
             return DEFAULT_CONFIG;
         }
     });
@@ -99,7 +99,7 @@ const ThermalReceiptModal = ({ sale, isOpen, onClose, autoPrint = false }) => {
             }, 350);
             return () => clearTimeout(timer);
         }
-    }, [isOpen, autoPrint, sale]);
+    }, [isOpen, autoPrint, sale]); // eslint-disable-line react-hooks/exhaustive-deps
 
     if (!isOpen || !sale) return null;
 
@@ -108,7 +108,9 @@ const ThermalReceiptModal = ({ sale, isOpen, onClose, autoPrint = false }) => {
         setDrawerKicked(true);
         try {
             playBarcodeBeep('success');
-        } catch (e) {}
+        } catch {
+            // Audio context feedback not available
+        }
         toast.info('⚡ Señal enviada a la gaveta monedero (RJ11/RJ12)');
         setTimeout(() => setDrawerKicked(false), 2000);
     };

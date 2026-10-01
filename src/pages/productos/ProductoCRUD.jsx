@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useMemo } from "react";
+import { useState, useEffect, useMemo } from "react";
 import {
   FaPlus,
   FaEdit,
@@ -41,7 +41,6 @@ const ProductosCRUD = () => {
   const [currentProducto, setCurrentProducto] = useState(null);
   const [showScanner, setShowScanner] = useState(false);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
   const [step, setStep] = useState('barcode');
   const [tempBarcode, setTempBarcode] = useState('');
   const [modalType, setModalType] = useState(null);
@@ -66,7 +65,7 @@ const ProductosCRUD = () => {
       const response = await api.get("/api/productos");
       setProductos(response.data);
     } catch (err) {
-      setError(err.response?.data?.message || err.message);
+      toast.error(err.response?.data?.message || 'Error al cargar inventario');
     } finally {
       setLoading(false);
     }

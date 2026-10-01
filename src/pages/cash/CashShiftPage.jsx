@@ -46,7 +46,7 @@ const formatDateTime = (dtStr) => {
 };
 
 const CashShiftPage = () => {
-    const { user, isAdmin } = useAuth();
+    const { user } = useAuth();
     const [activeTab, setActiveTab] = useState('current'); // 'current' | 'history'
     const [loading, setLoading] = useState(true);
     const [activeShift, setActiveShift] = useState(null);
@@ -70,7 +70,6 @@ const CashShiftPage = () => {
     const [closeNotes, setCloseNotes] = useState('');
 
     const [selectedHistoricalShift, setSelectedHistoricalShift] = useState(null);
-    const [historicalSummary, setHistoricalSummary] = useState(null);
 
     useEffect(() => {
         fetchShiftData();
@@ -172,14 +171,8 @@ const CashShiftPage = () => {
         }
     };
 
-    const handleViewHistoricalShift = async (shift) => {
+    const handleViewHistoricalShift = (shift) => {
         setSelectedHistoricalShift(shift);
-        try {
-            const summ = await cashShiftService.getShiftSummary(shift.id);
-            setHistoricalSummary(summ);
-        } catch (error) {
-            setHistoricalSummary(null);
-        }
     };
 
     // Cálculos de Arqueo de Cierre
@@ -217,9 +210,10 @@ const CashShiftPage = () => {
                     <button
                         className="cash-tab-btn"
                         onClick={fetchShiftData}
+                        disabled={loading}
                         title="Actualizar datos"
                     >
-                        <FaSync />
+                        <FaSync className={loading ? 'spin-icon' : ''} />
                     </button>
                 </div>
             </div>
